@@ -1,42 +1,9 @@
 <script lang="ts">
-    let retryCount = $state(0);
-
-    const pauseVideo = () => {
-        setTimeout(() => {
-            const videoElAll = [...document.querySelectorAll("video")];
-
-            videoElAll.forEach((videoEl) => {
-                videoEl.muted = true;
-                videoEl.pause();
-            });
-            // if (videoEl && !videoEl?.paused) {
-            //     console.log('video element found', videoEl);
-            //     videoEl.muted = true;
-            //     videoEl.pause();
-            // } else {
-            //     retryCount += 1;
-            //     console.log('retrying...', retryCount)
-            //     if (retryCount < 10) {
-            //         pauseVideo();
-            //     }
-            // }
-        }, 500);
-    };
 
     $effect(() => {
         console.log("App mounted");
-        // pauseVideo();
 
-        // setTimeout(() => {
-        //     const reelViewEl = document.querySelector(
-        //         "div.css-1cps6d6-BaseGridLayout-DivVerticalGridLayout.e1716dta2",
-        //     ) as HTMLElement;
-
-        //     if (reelViewEl) {
-        //         reelViewEl.style.display = "none";
-        //     }
-        // }, 1000);
-
+        
         // Step 1: Create a MutationObserver instance
         const observer = new MutationObserver((mutationsList, observer) => {
             // Step 2: Define a callback function to handle the mutations
