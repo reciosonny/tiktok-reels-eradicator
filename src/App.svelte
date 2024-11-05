@@ -3,7 +3,7 @@
     $effect(() => {
         console.log("App mounted");
 
-        
+
         // Step 1: Create a MutationObserver instance
         const observer = new MutationObserver((mutationsList, observer) => {
             // Step 2: Define a callback function to handle the mutations
@@ -33,6 +33,7 @@
                             //     divEl.style.display = "none";
                             // }
 
+                            // not efficient, yes. we'll find other ways to improve the removal of display other than triggering it in the mutation observer multiple times
                             const reelViewEl = document.querySelector(
                                 "div.css-1cps6d6-BaseGridLayout-DivVerticalGridLayout.e1716dta2",
                             ) as HTMLElement;
