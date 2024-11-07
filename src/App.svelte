@@ -12,7 +12,7 @@
                     // Step 4: Filter the mutations to focus on video elements
                     mutation.addedNodes.forEach((node) => {
                         if (node.nodeName === "VIDEO") {
-                            setTimeout(() => {
+                            setTimeout(() => { //TODO: improve logic. only pause / mute the video in "for you" page only
                                 const videoEl = node as HTMLVideoElement;
 
                                 videoEl.muted = true;
