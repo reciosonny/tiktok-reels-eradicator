@@ -14,12 +14,13 @@
     }
 
 
+    console.log('access chrome storage: ', chrome.storage.local);
 
     $effect(() => {
         console.log("App mounted");
 
         const interval = setInterval(() => { //TODO: Add a DB call to update the saved time (probably localStorage or chrome storage). Also stop the time counting when user is not on tiktok or user is viewing a reel
-            savedTime++;
+            savedTime++; //TODO: When time is changed, save this to chrome storage. We need to take a look at what storage will we use (local, session, sync)
             formattedTime = formatTime(savedTime);
         }, 1000);
 
