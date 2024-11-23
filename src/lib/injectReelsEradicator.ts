@@ -1,3 +1,4 @@
+import { dispatchUrlChangedEvent } from "./customEvents";
 
 
 const PATHS_TO_WATCH = ["/en", "/foryou", "/"];
@@ -13,8 +14,20 @@ export const injectReelsEradicator = () => {
     console.log('injecting reels eradicator here...');
 
 
+    let previousPath = window.location.pathname;
+
     const observer: MutationObserver = new MutationObserver(
         (mutationsList, observer) => {
+            const currentPath = window.location.pathname;
+
+            if (previousPath !== currentPath) {
+                previousPath = currentPath;
+                console.log('url changed...new url: ', currentPath);
+                
+                dispatchUrlChangedEvent(currentPath);
+            }
+
+
             // Step 2: Define a callback function to handle the mutations
             for (const mutation of mutationsList) {
                 if (mutation.type === "childList") {
