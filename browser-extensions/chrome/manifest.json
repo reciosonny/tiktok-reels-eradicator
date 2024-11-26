@@ -23,6 +23,6 @@
         }
     },
     "options_page": "./options.html",
-    "permissions": ["activeTab", "scripting", "storage"],
+    "permissions": ["activeTab", "scripting", "storage", "tabs", "tabGroups"],
     "host_permissions": ["*://www.tiktok.com/*", "*://tiktok.com/*"]
 }
