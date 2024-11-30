@@ -1,79 +1,59 @@
 <script lang="ts">
+    import { getChromeStorage, setChromeStorage } from "./lib/chromeStorage";
     import { addUrlChangedEventListener } from "./lib/customEvents";
+    import { formatTime } from "./lib/dateTimeHelper";
+    import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
 
     let showUIDisplay = $state(true);
 
-    let savedTime = 13356; // Example saved time in seconds //TODO: Refactor to get the saved time from chrome storage
-    let formattedTime = $state(formatTime(savedTime));
+    let savedTime = 0; //await getChromeStorage(TIMESPENT_STORE); // Example saved time in seconds //TODO: Refactor to get the saved time from chrome storage
+    let formattedTime = $state(""); //$state(formatTime(savedTime));
+    let savedTimeInitialized = $state(false);
 
-    function formatTime(seconds: number) {
-        const hrs = Math.floor(seconds / 3600);
-        const mins = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        return `${hrs} hours, ${mins} minutes, and ${secs} seconds`;
-    }
-
-    // TODO: Refactor
-    const getSetChromeStorage = async () => {
-        console.log("access chrome storage: ", chrome.storage.local);
-
-        // chrome.storage.local.set({ dateVal: new Date().getTime() }, function () {
-        //     console.log('date is being set');
-        // });
-
-        // TODO: Need to find a way to save the date in chrome storage only if the tiktok tab has been closed
-        const dateValStorage = await chrome.storage.local.get(["dateVal"]);
-
-        console.log(
-            "[dateVal] Value currently is",
-            new Date(dateValStorage.dateVal),
-        );
-        console.log("current date ", new Date());
-
-        chrome.storage.local.get(["val"], function (result) {
-            console.log("the valuessasdfgqwe: ", result);
-        });
+    const initializeTimeSpent = async () => {
+        const timeStore = await getChromeStorage(TIMESPENT_STORE);
+        savedTime = isNaN(timeStore) ? 0 : Number(timeStore);
+        formattedTime = formatTime(savedTime);
+        savedTimeInitialized = true;
     };
 
-    getSetChromeStorage();
+    // should be called once initializeTimeSpent is called
+    const intervalRunClock = () => {
+        if (!savedTimeInitialized) {
+            throw new Error(
+                "Saved time is not initialized. Please run it first in the code",
+            );
+        }
 
-    // console.log('chrome tabs: ', chrome)
-    // console.log(chrome.runtime.lastError)
+        return setInterval(async () => {
+            savedTime++;
+            formattedTime = formatTime(savedTime);
 
-    chrome.runtime.sendMessage({ action: "getTabs" }, (response) => {
-        console.log("Tabs: ", response.tabs);
-    });
+            await setChromeStorage(TIMESPENT_STORE, savedTime);
+        }, 1000);
+    };
+
+    /**
+     * This is used to keep track of the interval so that we can clear it when the component is unmounted
+     */
+    let runInterval: number;
 
     $effect(() => {
         console.log("App mounted");
 
-        const interval = setInterval(async () => {
-            //TODO: Add a DB call to update the saved time (probably localStorage or chrome storage). Also stop the time counting when user is not on tiktok or user is viewing a reel
-            savedTime++; //TODO: When time is changed, save this to chrome storage. We need to take a look at what storage will we use (local, session, sync)
-            formattedTime = formatTime(savedTime);
+        if (!savedTimeInitialized) {
+            initializeTimeSpent();
+            console.log("time spent initialized");
+        }
 
-            await chrome.storage.local.set({ timeSpentVal: savedTime });
-
-            console.log("Time spent is saved: ", savedTime);
-
-            // chrome.runtime.sendMessage({ action: "onSaveTimeSpent" }, (response) => {
-            //     // console.log("Tabs: ", response.tabs);
-            // });
-        }, 1000);
-
-        // Note: I don't think we need to focus on optimization for now
-        // window.addEventListener("beforeunload", function (e) {
-        //     console.log("user is about to close the tab");
-        //     // Cancel the event
-        //     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-        //     // Chrome requires returnValue to be set
-        //     e.returnValue = "are you sure you want to close the tab?";
-        // });
+        if (isPathValid() && savedTimeInitialized) {
+            runInterval = intervalRunClock();
+        }
 
         return () => {
             console.log("App unmounted");
-            clearInterval(interval);
+            clearInterval(runInterval);
         };
     });
 
@@ -81,8 +61,22 @@
         console.log("URL changed", detail);
         if (isPathValid()) {
             showUIDisplay = true;
+            runInterval = intervalRunClock();
         } else {
             showUIDisplay = false;
+            clearInterval(runInterval);
+        }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            console.log("Tab became active.");
+            runInterval = intervalRunClock();
+            chrome.runtime.sendMessage({ status: "active" });
+        } else {
+            console.log("Tab went to the background.");
+            clearInterval(runInterval);
+            chrome.runtime.sendMessage({ status: "inactive" });
         }
     });
 </script>
@@ -90,10 +84,6 @@
 {#if showUIDisplay}
     <main class="p-10">
         <h1>Tiktok reels are blocked</h1>
-        <!-- TODO: 
-                - Still need to add functionality where time is being tracked while using tiktok with this extension. 
-                - We may need to stop tracking its time when a user views a reel using search (optional) 
-        -->
         <p>
             <!-- You saved: <strong>36 hours and 56 minutes</strong> worth of distraction -->
             You saved: <strong>{formattedTime}</strong> worth of distraction from
