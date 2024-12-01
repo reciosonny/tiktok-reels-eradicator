@@ -82,7 +82,7 @@
 </script>
 
 {#if showUIDisplay}
-    <main class="p-10">
+    <main class="tiktok-reels-eradicator-main">
         <h1>Tiktok reels are blocked</h1>
         <p>
             <!-- You saved: <strong>36 hours and 56 minutes</strong> worth of distraction -->
