@@ -10,9 +10,11 @@ const isUrlValid = () => {
     return PATHS_TO_WATCH.some((path) => path === currentPath);
 };
 
+/**
+ * Logic for getting rid of reels goes here...
+ */
 export const injectReelsEradicator = () => {
     console.log('injecting reels eradicator here...');
-
 
     let previousPath = window.location.pathname;
 
@@ -47,7 +49,7 @@ export const injectReelsEradicator = () => {
                                 videoEl.pause();
                             }, 300);
                         } else if (node.nodeName === "DIV") {
-                            // not efficient, yes. we'll find other ways to improve the removal of display other than triggering it in the mutation observer multiple times
+                            //TODO: not efficient, yes. we'll find other ways to improve the removal of display other than triggering it in the mutation observer multiple times
                             const reelViewEl = document.querySelector(
                                 "div.css-1cps6d6-BaseGridLayout-DivVerticalGridLayout.e1716dta2"
                             ) as HTMLElement;
