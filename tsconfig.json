@@ -20,7 +20,7 @@
       // "$": ["./src"],
       "$/*": ["./src/*"],
     },
-    "types": ["tailwindcss", "chrome"]
+    "types": ["chrome"]
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "global.d.ts"]
 }

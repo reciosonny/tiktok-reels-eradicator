@@ -7,14 +7,14 @@
 
     let showUIDisplay = $state(true);
 
-    let savedTime = 0; //await getChromeStorage(TIMESPENT_STORE); // Example saved time in seconds //TODO: Refactor to get the saved time from chrome storage
-    let formattedTime = $state(""); //$state(formatTime(savedTime));
+    let savedTimeInSeconds = 0;
+    let formattedTime = $state("");
     let savedTimeInitialized = $state(false);
 
     const initializeTimeSpent = async () => {
         const timeStore = await getChromeStorage(TIMESPENT_STORE);
-        savedTime = isNaN(timeStore) ? 0 : Number(timeStore);
-        formattedTime = formatTime(savedTime);
+        savedTimeInSeconds = isNaN(timeStore) ? 0 : Number(timeStore);
+        formattedTime = formatTime(savedTimeInSeconds);
         savedTimeInitialized = true;
     };
 
@@ -27,10 +27,10 @@
         }
 
         return setInterval(async () => {
-            savedTime++;
-            formattedTime = formatTime(savedTime);
+            savedTimeInSeconds++;
+            formattedTime = formatTime(savedTimeInSeconds);
 
-            await setChromeStorage(TIMESPENT_STORE, savedTime);
+            await setChromeStorage(TIMESPENT_STORE, savedTimeInSeconds);
         }, 1000);
     };
 
@@ -79,15 +79,28 @@
             chrome.runtime.sendMessage({ status: "inactive" });
         }
     });
+
+    // For testing only. Remove once done in testing stage
+    const resetCountdown = async () => {
+        clearInterval(runInterval);
+        savedTimeInSeconds = 3600;
+
+
+        await setChromeStorage(TIMESPENT_STORE, savedTimeInSeconds);
+
+        console.log("Countdown reset successfully");
+    }
 </script>
 
 {#if showUIDisplay}
     <main class="tiktok-reels-eradicator-main">
         <h1>Tiktok reels are blocked</h1>
         <p>
-            <!-- You saved: <strong>36 hours and 56 minutes</strong> worth of distraction -->
             You saved: <strong>{formattedTime}</strong> worth of distraction from
             scrolling tiktok reels
         </p>
+
+        <!-- For testing only. Remove once done in testing stage -->
+        <button class="button" onclick={resetCountdown}>Reset countdown</button>
     </main>
 {/if}
