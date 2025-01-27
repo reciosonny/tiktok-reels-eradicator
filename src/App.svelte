@@ -17,7 +17,7 @@
         formattedTime = formatTime(savedTimeInSeconds);
         savedTimeInitialized = true;
     };
-
+    
     // should be called once initializeTimeSpent is called
     const intervalRunClock = () => {
         if (!savedTimeInitialized) {
@@ -48,6 +48,7 @@
         }
 
         if (isPathValid() && savedTimeInitialized) {
+            clearInterval(runInterval);
             runInterval = intervalRunClock();
         }
 
@@ -100,7 +101,7 @@
             scrolling tiktok reels
         </p>
 
-        <!-- For testing only. Remove once done in testing stage -->
-        <button class="button" onclick={resetCountdown}>Reset countdown</button>
+        <!-- For testing only. Remove once done in testing stage. TODO: Or when build is set to production -->
+        <!-- <button class="button" onclick={resetCountdown}>Reset countdown</button> -->
     </main>
 {/if}
