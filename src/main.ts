@@ -1,18 +1,27 @@
 import { mount } from 'svelte';
-import { initOptionsEntry } from './browser-widgets/options/main';
 import './style.scss';
 import App from './App.svelte'
+import AppOptions from './browser-widgets/options/App.svelte';
 
 import { injectReelsEradicator } from './lib/injectReelsEradicator';
 
 
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEradicator();
-    setTimeout(() => { //add a delay to make sure the component is mounted
-        const app = mount(App, { target: document.getElementById('app') as HTMLElement });
-    }, 2000);    
+    mount(App, { target: document.getElementById('app') as HTMLElement });
+    
+    // setTimeout(() => { // a delay to make sure the component is mounted
+    //     const app = mount(App, { target: document.getElementById('app') as HTMLElement });
+    // }, 100);    
+} else {
+    setTimeout(() => {
+        const elTarget = document.getElementById('appOptions');
+        if (!elTarget) {
+            return;
+        }
+        console.log('mounting options...', elTarget);
+        const app = mount(AppOptions, { target: elTarget as HTMLElement });        
+    }, 100);
 }
-
-initOptionsEntry();
 
 console.log(window.location);

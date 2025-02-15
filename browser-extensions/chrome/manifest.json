@@ -14,7 +14,8 @@
         {
             "matches": ["*://www.tiktok.com/*", "*://tiktok.com/*"],
             "js": ["./dist/index.js"],
-            "css": ["./dist/index.css"]
+            "css": ["./dist/index.css"],
+            "run_at": "document_idle"
         }
     ],
     "action": {
