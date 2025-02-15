@@ -70,11 +70,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: './src/main.ts',
-        module_inject: './src/module_inject.js',
-        // options: './src/browser-widgets/options/options.ts',
-        // 'index-html': './index.html',
-        // 'extension-click-entry': './src/extension-click-entry.ts',
-        // 'options': './src/browser-widgets/options/options.html',
       },
       output: {
         entryFileNames: "[name].js",
