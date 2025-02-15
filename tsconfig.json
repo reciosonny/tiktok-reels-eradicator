@@ -22,5 +22,6 @@
     },
     "types": ["chrome"]
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "global.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "global.d.ts"],
+  
 }
