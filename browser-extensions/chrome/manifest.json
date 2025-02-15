@@ -14,8 +14,7 @@
         {
             "matches": ["*://www.tiktok.com/*", "*://tiktok.com/*"],
             "js": ["./dist/index.js"],
-            "css": ["./dist/index.css"],
-            "run_at": "document_end"
+            "css": ["./dist/index.css"]
         }
     ],
     "action": {
@@ -23,7 +22,7 @@
             "128": "./images/default.png"
         }
     },
-    "options_page": "./options.html",
+    "options_page": "options.html",
     "permissions": ["activeTab", "scripting", "storage", "tabs", "tabGroups"],
     "host_permissions": ["*://www.tiktok.com/*", "*://tiktok.com/*"]
 }
