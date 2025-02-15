@@ -6,7 +6,6 @@
     import { isPathValid } from "./lib/routeHelper";
     
     let showUIDisplay = $state(true);
-    
     let savedTimeInSeconds = $state(0);
     let formattedTime = $state("");
     // let savedTimeInitialized = $state(false);

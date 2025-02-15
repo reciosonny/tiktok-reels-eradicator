@@ -1,4 +1,5 @@
 import { mount } from 'svelte';
+import './app.css';
 import './style.scss';
 import App from './App.svelte'
 import AppOptions from './browser-widgets/options/App.svelte';

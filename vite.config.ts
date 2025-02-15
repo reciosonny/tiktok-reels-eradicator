@@ -1,6 +1,7 @@
 import path from "path";
 import fs from 'fs';
 
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 // import sassDts from 'vite-plugin-sass-dts';
@@ -54,11 +55,13 @@ const MoveHtmlPlugin = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svelte({
-    compilerOptions: {
-      runes: true
-    }
-  })],
+  plugins: [
+    svelte({
+      compilerOptions: {
+        runes: true
+      }
+    }), 
+    tailwindcss()],
   css: {
     devSourcemap: true,
   },
