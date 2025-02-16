@@ -102,14 +102,16 @@
 
 {#if showUIDisplay}
     <main class="tiktok-reels-eradicator-main">
-        <h1>Tiktok reels are blocked</h1>
+        <h1 class="text-3xl font-medium">Tiktok reels are blocked</h1>
         <p>
             You saved: <strong>{formattedTime}</strong> worth of distraction from
             scrolling tiktok reels
         </p>
 
         {#if ENV.VITE_APP_MODE === 'development'}
-            <button class="button p-3" style="color: #000;" onclick={resetCountdown}>Reset countdown</button>
+            <div class="pt-4">
+                <button class="button mt-4 p-3" style="color: #000;" onclick={resetCountdown}>Reset countdown</button>
+            </div>
         {/if}
     </main>
 {/if}
