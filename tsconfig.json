@@ -15,10 +15,9 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "paths": {
-      "@repo/ui": ["../../packages/ui/src"],
-      "@repo/ui/*": ["../../packages/ui/src/*"],
-      // "$": ["./src"],
-      "$/*": ["./src/*"],
+      "$": ["./src"],
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"],
     },
     "types": ["chrome"]
   },

@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "VITE_APP_MODE=production vite build",
-    "build:dev": "VITE_APP_MODE=development vite build",
-    "build:watch": "VITE_APP_MODE=development vite build --watch",
+    "build:dev": "NODE_ENV=development VITE_APP_MODE=development vite build --mode development",
+    "build:watch": "NODE_ENV=development VITE_APP_MODE=development vite build --mode development --watch",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
   },

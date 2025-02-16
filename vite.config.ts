@@ -54,32 +54,41 @@ const MoveHtmlPlugin = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    svelte({
-      compilerOptions: {
-        runes: true
+export default defineConfig(({ mode }) => {
+
+  return {
+    plugins: [
+      svelte({
+        compilerOptions: {
+          runes: true
+        }
+      }), 
+      tailwindcss()],
+    css: {
+      devSourcemap: mode === 'development',
+    },
+    build: {
+      commonjsOptions: {
+        include: [/@repo\/ui/, /node_modules/],
+      },
+      outDir: "./browser-extensions/chrome/dist",
+      rollupOptions: {
+        input: {
+          index: './src/main.ts',
+        },
+        output: {
+          entryFileNames: "[name].js",
+          chunkFileNames: "[name].js",
+          assetFileNames: "[name].[ext]",
+        },
+      },
+      minify: mode === 'production',
+      sourcemap: mode === 'development',
+    },
+    resolve: {
+      alias: {
+        '$lib': path.resolve("./src/lib"),
       }
-    }), 
-    tailwindcss()],
-  css: {
-    devSourcemap: true,
-  },
-  build: {
-    commonjsOptions: {
-      include: [/@repo\/ui/, /node_modules/],
-    },
-    outDir: "./browser-extensions/chrome/dist",
-    rollupOptions: {
-      input: {
-        index: './src/main.ts',
-      },
-      output: {
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]",
-      },
-    },
-    minify: false
+    }
   }
 })
