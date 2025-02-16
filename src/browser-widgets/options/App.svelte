@@ -1,7 +1,6 @@
 <script lang="ts">
     import Switch from "$lib/components/Switch/Switch.svelte";
     import "./options.scss";
-    import { Accordion, Label } from "bits-ui";
 </script>
 
 <main>

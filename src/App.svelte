@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getChromeStorage, setChromeStorage } from "./lib/chromeStorage";
-    import { addUrlChangedEventListener } from "./lib/customEvents";
+    import { addInHomePageEventListener, addOutsideHomePageEventListener, addUrlChangedEventListener } from "./lib/customEvents";
     import { formatTime } from "./lib/dateTimeHelper";
     import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
@@ -44,7 +44,7 @@
             runInterval = intervalRunClock();
         }
     
-        showUIDisplay = isPathValid();
+        // showUIDisplay = isPathValid();
     
         return () => {
             console.log("App unmounted");
@@ -52,16 +52,26 @@
         };
     });
     
+    // As of Feb. 2025: This approach no longer works. Tiktok still displays reels homepage and change its url dynamically without changing the page. But we'll keep this in case it works in the future
     addUrlChangedEventListener(({ detail }: CustomEvent) => {
         console.log("URL changed", detail);
-        if (isPathValid()) {
-            showUIDisplay = true;
-            clearInterval(runInterval); // clear the interval to avoid multiple intervals running
-            runInterval = intervalRunClock();
-        } else {
-            showUIDisplay = false;
-            clearInterval(runInterval);
-        }
+        // if (isPathValid()) {
+        //     showUIDisplay = true;
+        //     clearInterval(runInterval); // clear the interval to avoid multiple intervals running
+        //     runInterval = intervalRunClock();
+        // } else {
+        //     showUIDisplay = false;
+        //     clearInterval(runInterval);
+        // }
+    });
+
+    addInHomePageEventListener(({ detail }: CustomEvent) => {
+        showUIDisplay = true;
+        console.log('Inside homepage');
+    });
+    addOutsideHomePageEventListener(({ detail }: CustomEvent) => {
+        console.log('Outside homepage');
+        showUIDisplay = false;
     });
     
     document.addEventListener("visibilitychange", () => {
@@ -99,7 +109,7 @@
         </p>
 
         {#if ENV.VITE_APP_MODE === 'development'}
-            <button class="button" onclick={resetCountdown}>Reset countdown</button>
+            <button class="button p-3" style="color: #000;" onclick={resetCountdown}>Reset countdown</button>
         {/if}
     </main>
 {/if}

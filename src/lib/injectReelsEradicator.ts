@@ -1,7 +1,10 @@
-import { dispatchUrlChangedEvent } from "./customEvents";
+import {
+    dispatchInHomePageEvent,
+    dispatchOutsideHomePageEvent,
+    dispatchUrlChangedEvent,
+} from "./customEvents";
 
-
-const PATHS_TO_WATCH = ["/en", "/foryou", "/"];
+const PATHS_TO_WATCH = ["/en", "/foryou", "/", "/friends", "/explore"];
 
 // improve logic. use other declarations to improve the code
 const isUrlValid = () => {
@@ -14,7 +17,7 @@ const isUrlValid = () => {
  * Logic for getting rid of reels goes here...
  */
 export const injectReelsEradicator = () => {
-    console.log('injecting reels eradicator here...');
+    console.log("injecting reels eradicator here...");
 
     let previousPath = window.location.pathname;
 
@@ -24,11 +27,10 @@ export const injectReelsEradicator = () => {
 
             if (previousPath !== currentPath) {
                 previousPath = currentPath;
-                console.log('url changed...new url: ', currentPath);
-                
+                console.log("url changed...new url: ", currentPath);
+
                 dispatchUrlChangedEvent(currentPath);
             }
-
 
             // Step 2: Define a callback function to handle the mutations
             for (const mutation of mutationsList) {
@@ -48,7 +50,7 @@ export const injectReelsEradicator = () => {
                                 videoEl.muted = true;
                                 videoEl.pause();
                             }, 300);
-                        } else if (node.nodeName === "DIV") {
+                        } else if (node.nodeName === "DIV" || node.nodeName === 'MAIN') {
                             //TODO: not efficient, yes. we'll find other ways to improve the removal of display other than triggering it in the mutation observer multiple times
                             const reelViewEl = document.querySelector(
                                 "div.css-1cps6d6-BaseGridLayout-DivVerticalGridLayout.e1716dta2"
@@ -59,12 +61,14 @@ export const injectReelsEradicator = () => {
                             }
 
                             // hide reel contents at the bottom to prevent scrolling further
-                            const mainContentHomepageReels =
-                                document.getElementById(
-                                    "main-content-homepage_hot"
-                                );
-                            if (mainContentHomepageReels) {
-                                mainContentHomepageReels.style.display = "none";
+                            const mainContentReels =
+                                document.getElementById("main-content-homepage_hot") ??
+                                document.getElementById("main-content-friends_page");
+                            if (mainContentReels) {
+                                mainContentReels.style.display = "none";
+                                dispatchInHomePageEvent();
+                            } else {
+                                dispatchOutsideHomePageEvent();
                             }
                         }
                     });

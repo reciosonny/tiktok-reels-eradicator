@@ -9,18 +9,17 @@ import { injectReelsEradicator } from './lib/injectReelsEradicator';
 
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEradicator();
-    mount(App, { target: document.getElementById('app') as HTMLElement });
+    // mount(App, { target: document.getElementById('app') as HTMLElement });
     
-    // setTimeout(() => { // a delay to make sure the component is mounted
-    //     const app = mount(App, { target: document.getElementById('app') as HTMLElement });
-    // }, 100);    
+    setTimeout(() => { // a delay to make sure the component is mounted
+        const app = mount(App, { target: document.getElementById('app') as HTMLElement });
+    }, 100);    
 } else {
     setTimeout(() => {
         const elTarget = document.getElementById('appOptions');
         if (!elTarget) {
             return;
         }
-        console.log('mounting options...', elTarget);
         const app = mount(AppOptions, { target: elTarget as HTMLElement });        
     }, 100);
 }
