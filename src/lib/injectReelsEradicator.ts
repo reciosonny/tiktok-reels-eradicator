@@ -61,6 +61,7 @@ export const injectReelsEradicator = () => {
                             }
 
                             // hide reel contents at the bottom to prevent scrolling further
+                            // TODO: maybe we can also reuse this logic in main.ts file
                             const mainContentReels =
                                 document.getElementById("main-content-homepage_hot") ??
                                 document.getElementById("main-content-friends_page");
