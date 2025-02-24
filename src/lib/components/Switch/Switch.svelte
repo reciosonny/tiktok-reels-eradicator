@@ -14,7 +14,6 @@
 <div class={`flex items-center space-x-3 ${className}`}>
     <Switch.Root
         id={id}
-        name="hello"
         style="background: yellow;"
         class={`border focus-visible:ring-foreground focus-visible:ring-offset-background data-[state=checked]:bg-foreground data-[state=unchecked]:bg-dark-10 data-[state=unchecked]:shadow-mini-inset dark:data-[state=checked]:bg-foreground peer inline-flex h-[36px] min-h-[36px] w-[60px] shrink-0 cursor-pointer items-center rounded-full px-[3px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
         onCheckedChange={onCheckedChange}
