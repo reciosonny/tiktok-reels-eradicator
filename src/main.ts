@@ -23,5 +23,3 @@ if (window.location.protocol !== "chrome-extension:") {
         const app = mount(AppOptions, { target: elTarget as HTMLElement });        
     }, 100);
 }
-
-console.log(window.location);

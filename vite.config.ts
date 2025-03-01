@@ -58,11 +58,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
-      svelte({
-        compilerOptions: {
-          runes: true
-        }
-      }), 
+      svelte(), 
       tailwindcss()],
     css: {
       devSourcemap: mode === 'development',
