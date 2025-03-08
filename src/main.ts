@@ -27,7 +27,7 @@ if (window.location.protocol !== "chrome-extension:") {
     
     setTimeout(() => { // a delay to make sure the component is mounted
         const app = mount(App, { target: document.getElementById('app') as HTMLElement });
-    }, 100);    
+    }, 100);
 } else { //mount the options page here...
     setTimeout(() => {
         const elTarget = document.getElementById('appOptions');

@@ -83,8 +83,8 @@
     const onDisableFor = async (val: boolean) => {
         showDisableFor = val;
         if (!val) {
-            removeChromeStorage('DISABLE_REEL_OPTIONS');
-            removeChromeStorage('DISABLE_DURATION');
+            await removeChromeStorage('DISABLE_REEL_OPTIONS');
+            await removeChromeStorage('DISABLE_DURATION');
         } else {
             const disableDuration = computeDisableDuration('10 mins.'); //default value when enabling
             await setChromeStorage('DISABLE_DURATION', disableDuration);
