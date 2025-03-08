@@ -1,18 +1,64 @@
 <script lang="ts">
+    import dayjs from 'dayjs';
     import toast, { Toaster } from 'svelte-french-toast';
     import Switch from "$lib/components/Switch/Switch.svelte";
     import RadioOptions, { type OptionSelection } from "$lib/components/RadioOptions/RadioOptions.svelte";
 
     import "./options.scss";
-    import { setChromeStorage } from '$lib/chromeStorage';
+    import { getChromeStorage, removeChromeStorage, setChromeStorage } from '$lib/chromeStorage';
     import type { DisableReelOptions } from '$lib/types';
 
     let showQuotes = $state(false);
     let showDisableFor = $state(false);
     let disableReelOptions: DisableReelOptions = $state('');
 
-    const onOptionChanged = (val: DisableReelOptions) => {
+    // @ts-ignore
+    window.dayjs = dayjs;
+
+    const computeDisableDuration = (val: DisableReelOptions) => {
+        let disableDuration: number = 0;
+
+        switch (val) {
+            case '10 mins.':
+                disableDuration = dayjs().add(10, 'm').valueOf();
+                break;
+            case '30 mins.':
+                disableDuration = dayjs().add(30, 'm').valueOf();                
+                break;
+            case '1 hour':
+                disableDuration = dayjs().add(1, 'h').valueOf();
+                break;
+            case '2 hours':
+                disableDuration = dayjs().add(2, 'h').valueOf();
+                break;
+            case '4 hours':
+                disableDuration = dayjs().add(4, 'h').valueOf();
+                break;
+            case '8 hours':
+                disableDuration = dayjs().add(8, 'h').valueOf();
+                break;
+            default:
+                break;
+        }
+
+        return disableDuration;
+    }
+
+    const setDisableDuration = async (val: DisableReelOptions) => {
+        
+        if (val === 'forever') {
+            await setChromeStorage('DISABLE_DURATION', 'forever');
+        } else {
+            const disableDuration = computeDisableDuration(val);
+            await setChromeStorage('DISABLE_DURATION', disableDuration);
+        }
+    }
+
+    const onOptionChanged = async (val: DisableReelOptions) => {
         disableReelOptions = val;
+        await setChromeStorage('DISABLE_REEL_OPTIONS', val);
+        await setDisableDuration(val);
+
         toast.success("Option changed!");
     };
 
@@ -26,9 +72,25 @@
         { value: "forever", label: "forever" },
     ];
 
+    const getLocalStoreValues = async () => {
+        disableReelOptions = await getChromeStorage('DISABLE_REEL_OPTIONS') ?? '10 mins.';
+    }
+
     $effect(() => {
-        // setChromeStorage('') //TODO: save disableReelOptions to chrome storage
+        getLocalStoreValues();
     });
+    
+    const onDisableFor = async (val: boolean) => {
+        showDisableFor = val;
+        if (!val) {
+            removeChromeStorage('DISABLE_REEL_OPTIONS');
+            removeChromeStorage('DISABLE_DURATION');
+        } else {
+            const disableDuration = computeDisableDuration('10 mins.'); //default value when enabling
+            await setChromeStorage('DISABLE_DURATION', disableDuration);
+        }
+        toast.success('Option changed!');
+    }
 </script>
 
 <main class="px-72 pt-12">
@@ -39,16 +101,17 @@
             <Switch
                 id="thisIsId"
                 className="mt-4"
-                onCheckedChange={(val) => (showDisableFor = val)}
+                onCheckedChange={onDisableFor}
             >
                 <span>Disable reel block</span>
             </Switch>
 
             {#if showDisableFor}
                 <section class="pt-4">
-                    <h3 class="text-lg">Disable for</h3>
+                    <h3 class="text-lg font-medium">Disable for</h3>
                     <RadioOptions
                         class="pl-3.5 pt-2"
+                        value={disableReelOptions}
                         selections={reelOptionSelections}
                         onValueChanged={onOptionChanged}
                     />
@@ -85,6 +148,9 @@
             {/if}
         </section>
     </section>
+    <div class="pt-12">
+        <h2 class="text-lg">By: Sonny Recio</h2>
+    </div>
 </main>
 
 <Toaster />

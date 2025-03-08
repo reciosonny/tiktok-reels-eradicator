@@ -4,6 +4,7 @@ import fs from 'fs';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import checker from 'vite-plugin-checker';
 // import sassDts from 'vite-plugin-sass-dts';
 
 const reorganizeOptionsAssets = {
@@ -59,7 +60,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       svelte(), 
-      tailwindcss()],
+      tailwindcss()
+    ],
     css: {
       devSourcemap: mode === 'development',
     },

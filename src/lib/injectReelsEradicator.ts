@@ -16,7 +16,7 @@ const isUrlValid = () => {
 /**
  * Logic for getting rid of reels goes here...
  */
-export const injectReelsEradicator = () => {
+export const injectReelsEradicator = async () => {
     console.log("injecting reels eradicator here...");
 
     let previousPath = window.location.pathname;
@@ -43,13 +43,14 @@ export const injectReelsEradicator = () => {
                     // TODO: logic causing performance issues. optimize later or better yet use other approach than mutation observer
                     mutation.addedNodes.forEach((node) => {
                         if (node.nodeName === "VIDEO") {
-                            setTimeout(() => {
-                                //TODO: improve logic. only pause / mute the video in "for you" page only
-                                const videoEl = node as HTMLVideoElement;
+                            console.log('video logic disabled...');
+                            // setTimeout(() => {
+                            //     //TODO: improve logic. only pause / mute the video in "for you" page only
+                            //     const videoEl = node as HTMLVideoElement;
 
-                                videoEl.muted = true;
-                                videoEl.pause();
-                            }, 300);
+                            //     // videoEl.muted = true;
+                            //     videoEl.pause();
+                            // }, 300);
                         } else if (node.nodeName === "DIV" || node.nodeName === 'MAIN') {
                             //TODO: not efficient, yes. we'll find other ways to improve the removal of display other than triggering it in the mutation observer multiple times
                             const reelViewEl = document.querySelector(

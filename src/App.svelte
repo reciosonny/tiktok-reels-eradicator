@@ -5,14 +5,14 @@
     import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
     
-    let showUIDisplay = $state(true);
+    let showUIDisplay = $state(false);
     let savedTimeInSeconds = $state(0);
     let formattedTime = $state("");
     // let savedTimeInitialized = $state(false);
     const ENV = import.meta.env;
     
     const initializeTimeSpent = async () => {
-        const timeStore = await getChromeStorage(TIMESPENT_STORE);
+        const timeStore = await getChromeStorage('TIMESPENT_STORE');
         savedTimeInSeconds = isNaN(timeStore) ? 0 : Number(timeStore);
         formattedTime = formatTime(savedTimeInSeconds);
         // savedTimeInitialized = true;
@@ -27,7 +27,7 @@
             savedTimeInSeconds++;
             formattedTime = formatTime(savedTimeInSeconds);
     
-            await setChromeStorage(TIMESPENT_STORE, savedTimeInSeconds);
+            await setChromeStorage('TIMESPENT_STORE', savedTimeInSeconds);
         }, 1000);
     };
     
@@ -67,10 +67,10 @@
 
     addInHomePageEventListener(({ detail }: CustomEvent) => {
         showUIDisplay = true;
-        console.log('Inside homepage');
+        // console.log('Inside homepage');
     });
     addOutsideHomePageEventListener(({ detail }: CustomEvent) => {
-        console.log('Outside homepage');
+        // console.log('Outside homepage');
         showUIDisplay = false;
     });
     

@@ -1,7 +1,7 @@
+type StorageType = 'DISABLE_REEL_OPTIONS' | 'TIMESPENT_STORE' | 'DISABLE_DURATION';
 
 
-
-export const getChromeStorage = async (key: string) => {
+export const getChromeStorage = async (key: StorageType) => {
     if (!chrome.storage) {
         console.log('Chrome storage not available', chrome);
         return null;
@@ -11,7 +11,7 @@ export const getChromeStorage = async (key: string) => {
     return result[key];
 }
 
-export const setChromeStorage = async (key: string, val: any) => {
+export const setChromeStorage = async (key: StorageType, val: any) => {
     if (!chrome.storage) {
         return;
     }
@@ -19,4 +19,11 @@ export const setChromeStorage = async (key: string, val: any) => {
     await chrome.storage.local.set({ [key]: val });
 }
 
+export const removeChromeStorage = async (key: StorageType) => {
+    if (!chrome.storage) {
+        return;
+    }
+
+    await chrome.storage.local.remove(key);
+}
 

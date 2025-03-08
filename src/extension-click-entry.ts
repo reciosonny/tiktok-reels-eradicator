@@ -1,5 +1,3 @@
-console.log('this will be used when the extension is clicked');
-
 // Function to set properties and dispatch custom events
 function setWindowProperty(property: any, value: any) {
     const oldValue = window[property];
