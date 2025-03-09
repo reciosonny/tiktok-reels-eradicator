@@ -55,14 +55,14 @@
     // As of Feb. 2025: This approach no longer works. Tiktok still displays reels homepage and change its url dynamically without changing the page. But we'll keep this in case it works in the future
     addUrlChangedEventListener(({ detail }: CustomEvent) => {
         console.log("URL changed", detail);
-        // if (isPathValid()) {
-        //     showUIDisplay = true;
-        //     clearInterval(runInterval); // clear the interval to avoid multiple intervals running
-        //     runInterval = intervalRunClock();
-        // } else {
-        //     showUIDisplay = false;
-        //     clearInterval(runInterval);
-        // }
+        if (isPathValid()) {
+            showUIDisplay = true;
+            clearInterval(runInterval); // clear the interval to avoid multiple intervals running
+            runInterval = intervalRunClock();
+        } else {
+            showUIDisplay = false;
+            clearInterval(runInterval);
+        }
     });
 
     addInHomePageEventListener(({ detail }: CustomEvent) => {
