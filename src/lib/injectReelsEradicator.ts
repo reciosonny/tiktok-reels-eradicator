@@ -2,6 +2,7 @@ import {
     dispatchInHomePageEvent,
     dispatchOutsideHomePageEvent,
     dispatchUrlChangedEvent,
+    dispatchUrlExcludedEvent,
 } from "./customEvents";
 
 const PATHS_TO_WATCH = ["/en", "/foryou", "/", "/friends", "/explore"];
@@ -36,6 +37,7 @@ export const injectReelsEradicator = async () => {
             for (const mutation of mutationsList) {
                 if (mutation.type === "childList") {
                     if (!isUrlValid()) {
+                        dispatchUrlExcludedEvent();
                         return;
                     }
 

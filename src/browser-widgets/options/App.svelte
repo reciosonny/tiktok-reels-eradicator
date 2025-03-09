@@ -58,7 +58,7 @@
         disableReelOptions = val;
         await setChromeStorage('DISABLE_REEL_OPTIONS', val);
         await setDisableDuration(val);
-
+        
         toast.success("Option changed!");
     };
 

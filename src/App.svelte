@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getChromeStorage, setChromeStorage } from "./lib/chromeStorage";
-    import { addInHomePageEventListener, addOutsideHomePageEventListener, addUrlChangedEventListener } from "./lib/customEvents";
+    import { addInHomePageEventListener, addOutsideHomePageEventListener, addUrlChangedEventListener, addUrlExcludedListener } from "./lib/customEvents";
     import { formatTime } from "./lib/dateTimeHelper";
     import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
@@ -67,10 +67,13 @@
 
     addInHomePageEventListener(({ detail }: CustomEvent) => {
         showUIDisplay = true;
-        // console.log('Inside homepage');
+        console.log('Inside homepage');
     });
     addOutsideHomePageEventListener(({ detail }: CustomEvent) => {
-        // console.log('Outside homepage');
+        console.log('Outside homepage');
+        showUIDisplay = false;
+    });
+    addUrlExcludedListener(({ detail }: CustomEvent) => {
         showUIDisplay = false;
     });
     
