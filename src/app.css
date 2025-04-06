@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+    --font-heading: 'Rubik', sans-serif;
+    --font-body: "DM Sans", sans-serif;
+    --color-bg: #fff;
+    --color-text: #000;
+    --color-primary-100: #557480;
+    --color-primary-200: #546680;
+    --color-primary-300: #545880;
+    --color-accent-100: #FE2B54;
+    --color-accent-200: #20D5EC;
+}
+
+@layer base {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        /* @apply font-heading; */
+    }
+
+    body {
+        /* @apply font-body; */
+    }
+}

@@ -10,14 +10,14 @@
 
     let showQuotes = $state(false);
     let showDisableFor = $state(false);
-    let disableReelOptions: DisableReelOptions = $state('');
+    let disableReelOptions: boolean = $state(false);
+    let disableReelOptionsDuration: DisableReelOptions = $state('10 mins.');
 
     // @ts-ignore
     window.dayjs = dayjs;
 
     const computeDisableDuration = (val: DisableReelOptions) => {
         let disableDuration: number = 0;
-
         switch (val) {
             case '10 mins.':
                 disableDuration = dayjs().add(10, 'm').valueOf();
@@ -52,11 +52,14 @@
             const disableDuration = computeDisableDuration(val);
             await setChromeStorage('DISABLE_DURATION', disableDuration);
         }
+
+        await setChromeStorage('DISABLE_DURATION_SELECTION', val);
     }
 
     const onOptionChanged = async (val: DisableReelOptions) => {
-        disableReelOptions = val;
-        await setChromeStorage('DISABLE_REEL_OPTIONS', val);
+        // disableReelOptions = val;
+        // await setChromeStorage('DISABLE_REEL_OPTIONS', val);
+        await setChromeStorage('DISABLE_DURATION', val);
         await setDisableDuration(val);
         
         toast.success("Option changed!");
@@ -73,7 +76,15 @@
     ];
 
     const getLocalStoreValues = async () => {
-        disableReelOptions = await getChromeStorage('DISABLE_REEL_OPTIONS') ?? '10 mins.';
+        const storeReelOptions = await getChromeStorage('DISABLE_REEL_OPTIONS');
+        disableReelOptions = storeReelOptions;
+        showDisableFor = disableReelOptions;
+
+        const storeOptionsDuration = await getChromeStorage('DISABLE_DURATION_SELECTION');
+
+        if (storeOptionsDuration) {
+            disableReelOptionsDuration = storeOptionsDuration;
+        }
     }
 
     $effect(() => {
@@ -85,72 +96,80 @@
         if (!val) {
             await removeChromeStorage('DISABLE_REEL_OPTIONS');
             await removeChromeStorage('DISABLE_DURATION');
+            await removeChromeStorage('DISABLE_DURATION_SELECTION');
         } else {
             const disableDuration = computeDisableDuration('10 mins.'); //default value when enabling
             await setChromeStorage('DISABLE_DURATION', disableDuration);
+            await setChromeStorage('DISABLE_REEL_OPTIONS', val);
         }
         toast.success('Option changed!');
     }
+
+    const txtFooter = `Made with <3 by Sonny`;
 </script>
 
-<main class="px-72 pt-12">
-    <h1 class="text-center text-4xl">Tiktok reels eradicator</h1>
-    <section class="pt-20">
-        <h2 class="text-3xl">Settings</h2>
-        <section>
-            <Switch
-                id="thisIsId"
-                className="mt-4"
-                onCheckedChange={onDisableFor}
-            >
-                <span>Disable reel block</span>
-            </Switch>
-
-            {#if showDisableFor}
-                <section class="pt-4">
-                    <h3 class="text-lg font-medium">Disable for</h3>
-                    <RadioOptions
-                        class="pl-3.5 pt-2"
-                        value={disableReelOptions}
-                        selections={reelOptionSelections}
-                        onValueChanged={onOptionChanged}
-                    />
-                </section>
-            {/if}
-        </section>
-        <section>
-            <Switch
-                id="another"
-                className="mt-4"
-                onCheckedChange={(event) => (showQuotes = event)}
-            >
-                <span>Show quotes (soon)</span>
-            </Switch>
-
-            {#if showQuotes}
-                <div class="border-solid border-2 border-black p-4 mt-4">
-                    <h3 class="text-2xl">Quotes here</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quia, adipisci! Nobis soluta repudiandae, distinctio
-                        quam, labore dolorem reprehenderit modi harum error
-                        blanditiis officiis sequi facere iure suscipit mollitia,
-                        dignissimos quisquam?
-                    </p>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quia, adipisci! Nobis soluta repudiandae, distinctio
-                        quam, labore dolorem reprehenderit modi harum error
-                        blanditiis officiis sequi facere iure suscipit mollitia,
-                        dignissimos quisquam?
-                    </p>
-                </div>
-            {/if}
-        </section>
+<main class="px-[250px] pt-12">
+    <section class="flex items-center justify-center">
+        <h1 class="option-header text-center text-[47px] font-heading font-medium px-[30px] py-[15px] bg-black text-white inline relative">Tiktok eradicator</h1>
     </section>
-    <div class="pt-12">
-        <h2 class="text-lg">By: Sonny Recio</h2>
-    </div>
+    <section class="mt-20 box-border py-[30px] px-10 bg-primary-100">
+        <h2 class="font-heading text-4xl font-medium text-white">Settings</h2>
+        <div class="pt-[50px]">
+            <section>
+                <Switch
+                    id="thisIsId"
+                    className="mt-4"
+                    onCheckedChange={onDisableFor}
+                    checked={showDisableFor}
+                >
+                    <span class="text-base font-body font-normal text-white">Disable "For You" blocking</span>
+                </Switch>
+    
+                {#if showDisableFor}
+                    <section class="pt-4">
+                        <h3 class="text-base font-body text-white">Disable for</h3>
+                        <RadioOptions
+                            class="pl-3.5 pt-2"
+                            value={disableReelOptionsDuration}
+                            selections={reelOptionSelections}
+                            onValueChanged={onOptionChanged}
+                        />
+                    </section>
+                {/if}
+            </section>
+            <section>
+                <Switch
+                    id="another"
+                    className="mt-4"
+                    disabled={true}
+                    onCheckedChange={(event) => (showQuotes = event)}
+                >
+                    <span class="font-body font-normal text-[16px] text-white">Show quotes (soon)</span>
+                </Switch>
+    
+                {#if showQuotes}
+                    <div class="border-solid border-2 border-black p-4 mt-4">
+                        <h3 class="text-2xl">Quotes here</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Quia, adipisci! Nobis soluta repudiandae, distinctio
+                            quam, labore dolorem reprehenderit modi harum error
+                            blanditiis officiis sequi facere iure suscipit mollitia,
+                            dignissimos quisquam?
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Quia, adipisci! Nobis soluta repudiandae, distinctio
+                            quam, labore dolorem reprehenderit modi harum error
+                            blanditiis officiis sequi facere iure suscipit mollitia,
+                            dignissimos quisquam?
+                        </p>
+                    </div>
+                {/if}
+            </section>
+            <span class="font-body text-[16px] pt-[240px] block text-center text-white">{txtFooter}</span>
+        </div>
+    </section>
 </main>
 
-<Toaster />
+<Toaster containerClassName="font-body font-medium" />

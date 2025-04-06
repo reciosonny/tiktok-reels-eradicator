@@ -17,6 +17,8 @@ const injectReelsEraticatorFn = async () => {
     
     if (!disableReelBlock) {
         injectReelsEradicator();
+    } else {
+        // TODO: Set localstorage default values here...
     }
 }
 

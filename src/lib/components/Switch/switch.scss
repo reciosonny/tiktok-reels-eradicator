@@ -1,0 +1,11 @@
+
+
+.switch {
+    &--enabled {
+        background: #20D5EC;
+    }
+
+    &--disabled {
+        background: #FE2B54;
+    }
+}

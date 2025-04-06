@@ -29,9 +29,9 @@
             <RadioGroup.Item
                 id={selection.value}
                 value={selection.value}
-                class="border-border-input bg-background hover:border-dark-40 data-[state=checked]:border-6 data-[state=checked]:border-foreground size-5 shrink-0 cursor-default rounded-full border transition-all duration-100 ease-in-out"
+                class="border-border-input bg-white hover:border-dark-40 data-[state=checked]:border-7 data-[state=checked]:border-foreground size-5 shrink-0 cursor-default rounded-full border-3 transition-all duration-100 ease-in-out"
             />
-            <Label.Root for={selection.value} class="pl-3"
+            <Label.Root for={selection.value} class="pl-3 text-white font-body font-normal"
                 >{selection.label}</Label.Root
             >
         </div>
