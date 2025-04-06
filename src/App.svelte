@@ -121,9 +121,9 @@
 
 {#if showUIDisplay}
     <main class="tiktok-reels-eradicator-main">
-        <div class="flex flex-col gap-1">
-            <h1 class="text-[27px] font-heading font-medium">Tiktok reels are blocked</h1>
-            <p class="font-body text-base font-medium">
+        <div class="flex flex-col gap-2.5">
+            <h1 class="text-[27px] font-heading font-medium leading-none">Tiktok reels are blocked</h1>
+            <p class="font-body text-base font-medium leading-none">
                 You saved: <strong>{formattedTime}</strong> worth of distraction from
                 scrolling tiktok reels
             </p>

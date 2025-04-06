@@ -1,7 +1,7 @@
 {
-    "name": "Tiktok reels eradicator",
-    "description": "web content highlighter",
-    "version": "0.0.1",
+    "name": "Tiktok eradicator",
+    "description": "Get rid of Tiktok's 'For You' page and focus on what you do most",
+    "version": "1",
     "manifest_version": 3,
     "icons": {
         "128": "./images/default.png",
