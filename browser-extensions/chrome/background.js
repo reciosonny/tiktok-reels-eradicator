@@ -4,7 +4,6 @@ chrome.action.onClicked.addListener(async (tab) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getTabs") {
-        console.log('query received...');
         chrome.storage.local.get("dateVal", (data) => {
             console.log('dateVal value: ', data.dateVal);
         });

@@ -36,7 +36,6 @@
     // should be called once initializeTimeSpent is called
     const intervalRunClock = () => {
         initializeTimeSpent();
-        console.log('intervalRunClock called');
     
         return setInterval(async () => {
             savedTimeInSeconds++;
@@ -52,8 +51,6 @@
     let runInterval: number;
     
     $effect(() => {
-        console.log("App mounted");
-    
         if (isPathValid()) {
             clearInterval(runInterval);
             runInterval = intervalRunClock();
@@ -96,11 +93,9 @@
             console.log("Tab became active.");
             clearInterval(runInterval); // clear the interval to avoid multiple intervals running
             runInterval = intervalRunClock();
-            // chrome.runtime.sendMessage({ status: "active" });
         } else {
             console.log("Tab went to the background.");
             clearInterval(runInterval);
-            // chrome.runtime.sendMessage({ status: "inactive" });
         }
     });
     

@@ -1,7 +1,7 @@
 {
     "name": "Tiktok eradicator",
-    "description": "Get rid of Tiktok's 'For You' page and focus on what you do most",
-    "version": "1",
+    "description": "TikTok Eradicator helps you take back control of your time by removing TikTok's addictive feed.",
+    "version": "1.0.0",
     "manifest_version": 3,
     "icons": {
         "128": "./images/default.png",
@@ -24,6 +24,6 @@
         }
     },
     "options_page": "options.html",
-    "permissions": ["activeTab", "scripting", "storage", "tabs", "tabGroups"],
+    "permissions": ["storage"],
     "host_permissions": ["*://www.tiktok.com/*", "*://tiktok.com/*"]
 }
