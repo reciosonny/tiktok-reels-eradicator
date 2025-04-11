@@ -16,7 +16,7 @@
     fontGAPI.href = 'https://fonts.googleapis.com';  
     document.head.appendChild(fontGAPI);
     
-    const fontGstatic = document.createElement('link');  
+    const fontGstatic = document.createElement('link');
     fontGstatic.rel = 'preconnect';
     fontGstatic.href = 'https://fonts.gstatic.com';
     document.head.appendChild(fontGstatic);
@@ -50,14 +50,30 @@
      */
     let runInterval: number;
     
+    /**
+     * Mount component
+    */
     $effect(() => {
         if (isPathValid()) {
             clearInterval(runInterval);
             runInterval = intervalRunClock();
+
+            // If video is still shown in "For You" page, mute and pause it
+            // TODO: Refactor later
+            setTimeout(() => {
+                const elVideo = document.querySelector("video");
+                if (elVideo) {
+                    elVideo.muted = true;
+                    elVideo.pause();
+                }
+            }, 400);
+
+            // TODO: Refactor later
+            const mainContentReels = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page");
+
+            showUIDisplay = mainContentReels ? true : false;
         }
-    
-        // showUIDisplay = isPathValid();
-    
+
         return () => {
             console.log("App unmounted");
             clearInterval(runInterval);
