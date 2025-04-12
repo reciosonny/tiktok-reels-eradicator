@@ -30,7 +30,6 @@
         const timeStore = await getChromeStorage('TIMESPENT_STORE');
         savedTimeInSeconds = isNaN(timeStore) ? 0 : Number(timeStore);
         formattedTime = formatTime(savedTimeInSeconds);
-        // savedTimeInitialized = true;
     };
     
     // should be called once initializeTimeSpent is called
