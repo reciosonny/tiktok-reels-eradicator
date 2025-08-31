@@ -7,14 +7,16 @@ import AppOptions from './browser-widgets/options/App.svelte';
 
 import { injectReelsEradicator } from './lib/injectReelsEradicator';
 import { getChromeStorage } from '$lib/chromeStorage';
+import { settings } from './store/settings.svelte';
 
 const injectReelsEraticatorFn = async () => {
     const disableDuration = await getChromeStorage('DISABLE_DURATION');
     const currentDateTime = dayjs().valueOf();
     
-    console.log('disable duration: ', disableDuration);
     const disableReelBlock = disableDuration > currentDateTime || disableDuration === 'forever';
-    
+
+    settings.setBlockerVisibility(disableReelBlock);
+
     if (!disableReelBlock) {
         injectReelsEradicator();
     } else {
@@ -24,8 +26,6 @@ const injectReelsEraticatorFn = async () => {
 
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEraticatorFn();
-
-    // mount(App, { target: document.getElementById('app') as HTMLElement });
     
     setTimeout(() => { // a delay to make sure the component is mounted
         const app = mount(App, { target: document.getElementById('app') as HTMLElement });

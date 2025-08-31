@@ -4,6 +4,7 @@
     import { formatTime } from "./lib/dateTimeHelper";
     import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
+    import { settings } from "./store/settings.svelte";
     
     let showUIDisplay = $state(false);
     let savedTimeInSeconds = $state(0);
@@ -67,10 +68,13 @@
                 }
             }, 400);
 
-            // TODO: Refactor later
-            const mainContentReels = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page");
-
-            showUIDisplay = mainContentReels ? true : false;
+            if (settings.settings.isUIBlockerVisible) {
+                showUIDisplay = false;
+            } else {
+                // TODO: Refactor later
+                const mainContentReels = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page");
+                showUIDisplay = mainContentReels ? true : false;
+            }
         }
 
         return () => {
