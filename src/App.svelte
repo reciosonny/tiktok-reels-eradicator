@@ -4,12 +4,12 @@
     import { formatTime } from "./lib/dateTimeHelper";
     import { TIMESPENT_STORE } from "./lib/enums";
     import { isPathValid } from "./lib/routeHelper";
-    import { settings } from "./store/settings.svelte";
+    import { mainDisplayStore } from "./store/mainDisplayStore.svelte";
+    import { settingStore as settingsStore } from "./store/settings.svelte";
     
     let showUIDisplay = $state(false);
     let savedTimeInSeconds = $state(0);
     let formattedTime = $state("");
-    // let savedTimeInitialized = $state(false);
     const ENV = import.meta.env;
 
     const fontGAPI = document.createElement('link');  
@@ -57,24 +57,6 @@
         if (isPathValid()) {
             clearInterval(runInterval);
             runInterval = intervalRunClock();
-
-            // If video is still shown in "For You" page, mute and pause it
-            // TODO: Refactor later
-            setTimeout(() => {
-                const elVideo = document.querySelector("video");
-                if (elVideo) {
-                    elVideo.muted = true;
-                    elVideo.pause();
-                }
-            }, 400);
-
-            if (settings.settings.isUIBlockerVisible) {
-                showUIDisplay = false;
-            } else {
-                // TODO: Refactor later
-                const mainContentReels = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page");
-                showUIDisplay = mainContentReels ? true : false;
-            }
         }
 
         return () => {
@@ -84,29 +66,19 @@
     });
 
     addUrlChangedEventListener(({ detail }: CustomEvent) => {
-        console.log("URL changed", detail);
-        if (isPathValid()) {
-            showUIDisplay = true;
+        if (isPathValid() || settingsStore.store.disableAllPages) {
             clearInterval(runInterval); // clear the interval to avoid multiple intervals running
             runInterval = intervalRunClock();
         } else {
-            showUIDisplay = false;
             clearInterval(runInterval);
         }
     });
 
-    addInHomePageEventListener(({ detail }: CustomEvent) => {
-        showUIDisplay = true;
-        console.log('Inside homepage');
+    $effect(() => {
+        console.log('mainDisplayStore changed:', mainDisplayStore.store.isVisible);
+        showUIDisplay = mainDisplayStore.store.isVisible;
     });
-    addOutsideHomePageEventListener(({ detail }: CustomEvent) => {
-        console.log('Outside homepage');
-        showUIDisplay = false;
-    });
-    addUrlExcludedListener(({ detail }: CustomEvent) => {
-        showUIDisplay = false;
-    });
-    
+
     document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
             console.log("Tab became active.");
@@ -117,7 +89,7 @@
             clearInterval(runInterval);
         }
     });
-    
+
     // For testing only. Remove once done in testing stage
     const resetCountdown = async () => {
         savedTimeInSeconds = 0;
@@ -131,10 +103,10 @@
     }
 </script>
 
-{#if showUIDisplay}
+{#if mainDisplayStore.store.isVisible}
     <main class="tiktok-reels-eradicator-main">
         <div class="flex flex-col gap-2.5">
-            <h1 class="text-[27px] font-heading font-medium leading-none">"For You" page is blocked</h1>
+            <h1 class="text-[27px] font-heading font-medium leading-none">This page is blocked</h1>
             <p class="font-body text-base font-medium leading-none">
                 You saved: <strong>{formattedTime}</strong> worth of distraction from
                 scrolling tiktok

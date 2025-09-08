@@ -1,6 +1,6 @@
 
 
-const PATHS_TO_WATCH = ["/en", "/foryou", "/"];
+const PATHS_TO_WATCH = ["/en", "/foryou", "/", "/explore"];
 
 /**
  * Checks if path is valid to run the logic in this extension to block reels

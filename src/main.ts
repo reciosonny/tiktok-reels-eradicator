@@ -7,15 +7,17 @@ import AppOptions from './browser-widgets/options/App.svelte';
 
 import { injectReelsEradicator } from './lib/injectReelsEradicator';
 import { getChromeStorage } from '$lib/chromeStorage';
-import { settings } from './store/settings.svelte';
+import { settingStore } from './store/settings.svelte';
 
 const injectReelsEraticatorFn = async () => {
     const disableDuration = await getChromeStorage('DISABLE_DURATION');
+    const disableExplorePage = await getChromeStorage('DISABLE_EXPLORE_PAGE');
     const currentDateTime = dayjs().valueOf();
     
     const disableReelBlock = disableDuration > currentDateTime || disableDuration === 'forever';
 
-    settings.setBlockerVisibility(disableReelBlock);
+    settingStore.setDisableUIBlocker(disableReelBlock);
+    settingStore.setDisableExplorePage(disableExplorePage);
 
     if (!disableReelBlock) {
         injectReelsEradicator();
@@ -24,6 +26,7 @@ const injectReelsEraticatorFn = async () => {
     }
 }
 
+// TODO: Add UI for localhost dev as well that points to tiktok for testing
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEraticatorFn();
     

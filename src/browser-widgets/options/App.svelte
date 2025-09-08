@@ -10,6 +10,7 @@
 
     let showQuotes = $state(false);
     let showDisableFor = $state(false);
+    let disableExplorePage: boolean = $state(false);
     let disableReelOptions: boolean = $state(false);
     let disableReelOptionsDuration: DisableReelOptions = $state('10 mins.');
 
@@ -75,20 +76,22 @@
         { value: "forever", label: "forever" },
     ];
 
-    const getLocalStoreValues = async () => {
+    const initializeLocalStoreValues = async () => { //TODO: How about we move the initialization to a global store instead? What if?
         const storeReelOptions = await getChromeStorage('DISABLE_REEL_OPTIONS');
         disableReelOptions = storeReelOptions;
         showDisableFor = disableReelOptions;
 
         const storeOptionsDuration = await getChromeStorage('DISABLE_DURATION_SELECTION');
-
         if (storeOptionsDuration) {
             disableReelOptionsDuration = storeOptionsDuration;
         }
+
+        const storeDisableExplorePage = await getChromeStorage('DISABLE_EXPLORE_PAGE');
+        disableExplorePage = storeDisableExplorePage ?? false;
     }
 
     $effect(() => {
-        getLocalStoreValues();
+        initializeLocalStoreValues();
     });
     
     const onDisableFor = async (val: boolean) => {
@@ -102,6 +105,12 @@
             await setChromeStorage('DISABLE_DURATION', disableDuration);
             await setChromeStorage('DISABLE_REEL_OPTIONS', val);
         }
+        toast.success('Option changed!');
+    }
+
+    const onToggleDisableExplorePage = async (val: boolean) => {
+        disableExplorePage = val;
+        await setChromeStorage('DISABLE_EXPLORE_PAGE', val);
         toast.success('Option changed!');
     }
 
@@ -136,6 +145,15 @@
                         />
                     </section>
                 {/if}
+            </section>
+            <section>
+                <Switch
+                    className="mt-4"
+                    onCheckedChange={onToggleDisableExplorePage}
+                    checked={disableExplorePage}
+                >
+                    <span class="text-base font-body font-normal text-white">Include rest of the pages in blocking</span>
+                </Switch>
             </section>
             <section>
                 <Switch

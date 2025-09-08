@@ -1,17 +1,23 @@
 const createSettings = () => {
-    let settings = $state({
+    let store = $state({
         disableDuration: 0,
-        isUIBlockerVisible: false
+        disableUIBlock: false,
+        disableAllPages: false,
     });
 
-    const setBlockerVisibility = (visible: boolean) => {
-        settings.isUIBlockerVisible = visible;
+    const setDisableUIBlocker = (value: boolean) => {
+        store.disableUIBlock = value;
     }
 
-    return { 
-        get settings() { return settings }, 
-        setBlockerVisibility 
+    const setDisableExplorePage = (value: boolean) => {
+        store.disableAllPages = value;
+    }
+
+    return {
+        get store() { return store }, 
+        setDisableUIBlocker, 
+        setDisableExplorePage
     };
 }
 
-export const settings = createSettings();
+export const settingStore = createSettings();
