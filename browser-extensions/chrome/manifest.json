@@ -1,7 +1,7 @@
 {
     "name": "Tiktok eradicator",
     "description": "TikTok Eradicator helps you take back control of your time by removing TikTok's addictive feed.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "manifest_version": 3,
     "icons": {
         "128": "images/default.png",
