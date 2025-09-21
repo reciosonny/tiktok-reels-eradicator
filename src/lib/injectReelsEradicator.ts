@@ -1,12 +1,9 @@
 import { mainDisplayStore } from "../store/mainDisplayStore.svelte";
-import { settingStore } from "../store/settings.svelte";
 import {
-    dispatchInHomePageEvent,
     dispatchUrlChangedEvent,
 } from "./customEvents";
-import { mockWaitPromise } from "./utils";
+import { mockWaitPromise, PATHS_TO_WATCH } from "./utils";
 
-const PATHS_TO_WATCH = ["/en", "/foryou", "/", "/friends", "/explore", "/following"];
 
 // improve logic. use other declarations to improve the code
 const isUrlValid = () => {
@@ -25,29 +22,10 @@ const interceptAndPauseVideos = async (videoEl?: HTMLVideoElement) => {
     });
 }
 
-const disableExplorePage = async () => {
-
-    if (settingStore.store.disableAllPages) {
-        await mockWaitPromise(300);
-        const el = document.getElementById('main-content-explore_page');
-        if (el) {
-            el.style.display = 'none';
-
-            return true;
-        }
-    }
-
-    return false
-}
-
+// hide reel contents at the bottom to prevent scrolling further
 const disablePageElement = () => {
-    // hide reel contents at the bottom to prevent scrolling further
     // TODO: maybe we can also reuse this logic in main.ts file
-    let contentElement = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page");
-
-    if (settingStore.store.disableAllPages) { //if settings is enabled to block all pages, query the rest of the page to block it also
-        contentElement = document.getElementById("main-content-explore_page") ?? document.getElementById("main-content-homepage_follow") ?? contentElement;
-    }
+    let contentElement = document.getElementById("main-content-homepage_hot") ?? document.getElementById("main-content-friends_page") ?? document.getElementById("main-content-explore_page") ?? document.getElementById("main-content-homepage_follow");
 
     if (contentElement) {
         contentElement.style.display = "none";

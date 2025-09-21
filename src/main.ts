@@ -11,13 +11,11 @@ import { settingStore } from './store/settings.svelte';
 
 const injectReelsEraticatorFn = async () => {
     const disableDuration = await getChromeStorage('DISABLE_DURATION');
-    const disableExplorePage = await getChromeStorage('DISABLE_EXPLORE_PAGE');
     const currentDateTime = dayjs().valueOf();
     
     const disableReelBlock = disableDuration > currentDateTime || disableDuration === 'forever';
 
     settingStore.setDisableUIBlocker(disableReelBlock);
-    settingStore.setDisableExplorePage(disableExplorePage);
 
     if (!disableReelBlock) {
         injectReelsEradicator();

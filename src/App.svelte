@@ -7,7 +7,6 @@
     import { mainDisplayStore } from "./store/mainDisplayStore.svelte";
     import { settingStore as settingsStore } from "./store/settings.svelte";
     
-    let showUIDisplay = $state(false);
     let savedTimeInSeconds = $state(0);
     let formattedTime = $state("");
     const ENV = import.meta.env;
@@ -66,17 +65,12 @@
     });
 
     addUrlChangedEventListener(({ detail }: CustomEvent) => {
-        if (isPathValid() || settingsStore.store.disableAllPages) {
+        if (isPathValid()) {
             clearInterval(runInterval); // clear the interval to avoid multiple intervals running
             runInterval = intervalRunClock();
         } else {
             clearInterval(runInterval);
         }
-    });
-
-    $effect(() => {
-        console.log('mainDisplayStore changed:', mainDisplayStore.store.isVisible);
-        showUIDisplay = mainDisplayStore.store.isVisible;
     });
 
     document.addEventListener("visibilitychange", () => {

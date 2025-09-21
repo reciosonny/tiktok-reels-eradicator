@@ -10,7 +10,6 @@
 
     let showQuotes = $state(false);
     let showDisableFor = $state(false);
-    let disableExplorePage: boolean = $state(false);
     let disableReelOptions: boolean = $state(false);
     let disableReelOptionsDuration: DisableReelOptions = $state('10 mins.');
 
@@ -58,8 +57,6 @@
     }
 
     const onOptionChanged = async (val: DisableReelOptions) => {
-        // disableReelOptions = val;
-        // await setChromeStorage('DISABLE_REEL_OPTIONS', val);
         await setChromeStorage('DISABLE_DURATION', val);
         await setDisableDuration(val);
         
@@ -76,6 +73,7 @@
         { value: "forever", label: "forever" },
     ];
 
+    // TODO: Maybe we can mark this as deprecated later
     const initializeLocalStoreValues = async () => { //TODO: How about we move the initialization to a global store instead? What if?
         const storeReelOptions = await getChromeStorage('DISABLE_REEL_OPTIONS');
         disableReelOptions = storeReelOptions;
@@ -85,9 +83,6 @@
         if (storeOptionsDuration) {
             disableReelOptionsDuration = storeOptionsDuration;
         }
-
-        const storeDisableExplorePage = await getChromeStorage('DISABLE_EXPLORE_PAGE');
-        disableExplorePage = storeDisableExplorePage ?? false;
     }
 
     $effect(() => {
@@ -105,12 +100,6 @@
             await setChromeStorage('DISABLE_DURATION', disableDuration);
             await setChromeStorage('DISABLE_REEL_OPTIONS', val);
         }
-        toast.success('Option changed!');
-    }
-
-    const onToggleDisableExplorePage = async (val: boolean) => {
-        disableExplorePage = val;
-        await setChromeStorage('DISABLE_EXPLORE_PAGE', val);
         toast.success('Option changed!');
     }
 
@@ -145,15 +134,6 @@
                         />
                     </section>
                 {/if}
-            </section>
-            <section>
-                <Switch
-                    className="mt-4"
-                    onCheckedChange={onToggleDisableExplorePage}
-                    checked={disableExplorePage}
-                >
-                    <span class="text-base font-body font-normal text-white">Include rest of the pages in blocking</span>
-                </Switch>
             </section>
             <section>
                 <Switch
