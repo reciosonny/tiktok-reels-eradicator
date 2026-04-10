@@ -27,10 +27,8 @@ const injectReelsEraticatorFn = async () => {
 // TODO: Add UI for localhost dev as well that points to tiktok for testing
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEraticatorFn();
-    
-    setTimeout(() => { // a delay to make sure the component is mounted
-        const app = mount(App, { target: document.getElementById('app') as HTMLElement });
-    }, 100);
+
+    const app = mount(App, { target: document.getElementById('app') as HTMLElement });
 } else { //mount the options page here...
     setTimeout(() => {
         const elTarget = document.getElementById('appOptions');

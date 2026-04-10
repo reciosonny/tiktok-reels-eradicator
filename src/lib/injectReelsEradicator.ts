@@ -2,7 +2,7 @@ import { mainDisplayStore } from "../store/mainDisplayStore.svelte";
 import {
     dispatchUrlChangedEvent,
 } from "./customEvents";
-import { mockWaitPromise, PATHS_TO_WATCH } from "./utils";
+import { PATHS_TO_WATCH } from "./utils";
 
 
 // improve logic. use other declarations to improve the code
@@ -12,9 +12,8 @@ const isUrlValid = () => {
     return PATHS_TO_WATCH.some((path) => path === currentPath);
 };
 
-const interceptAndPauseVideos = async (videoEl?: HTMLVideoElement) => {
+const interceptAndPauseVideos = (videoEl?: HTMLVideoElement) => {
     const videos = videoEl ? [videoEl] : [...document.querySelectorAll("video")];
-    await mockWaitPromise(300);
 
     videos.forEach((video) => {
         video.muted = true;
@@ -65,7 +64,7 @@ export const injectReelsEradicator = async () => {
 
                     // Step 4: Filter the mutations to focus on video elements
                     // TODO: logic causing performance issues. optimize later or better yet use other approach than mutation observer
-                    mutation.addedNodes.forEach(async (node) => {
+                    mutation.addedNodes.forEach((node) => {
                         if (node.nodeName === "VIDEO") {
                             const videoEl = node as HTMLVideoElement;
                             interceptAndPauseVideos(videoEl);
@@ -74,6 +73,12 @@ export const injectReelsEradicator = async () => {
                             node.nodeName === "MAIN"
                         ) {
                             disablePageElement();
+                            // Also pause any videos nested inside this added node
+                            if (node instanceof HTMLElement) {
+                                node.querySelectorAll("video").forEach((video) => {
+                                    interceptAndPauseVideos(video);
+                                });
+                            }
                         }
                     });
                 }
@@ -86,4 +91,11 @@ export const injectReelsEradicator = async () => {
 
     // Start observing the target node (e.g., document.body)
     observer.observe(document.body, config);
+
+    // Initial scan: handle elements already in the DOM before the observer started
+    // This is critical for cold loads where document_idle fires after TikTok has already rendered
+    if (isUrlValid()) {
+        disablePageElement();
+        interceptAndPauseVideos();
+    }
 };
