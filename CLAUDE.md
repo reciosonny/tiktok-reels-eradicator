@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## What This Is
+## Project scope
 
 A Chrome extension (Manifest V3) that blocks TikTok's addictive feed pages. It injects a content script into `tiktok.com`, hides the feed DOM elements, mutes/pauses videos, and shows a "blocked" overlay. Users can disable blocking temporarily via the extension's options page.
 
