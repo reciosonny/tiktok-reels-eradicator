@@ -2,10 +2,10 @@
 
 .switch {
     &--enabled {
-        background: #20D5EC;
+        background: var(--color-accent-200);
     }
 
     &--disabled {
-        background: #FE2B54;
+        background: var(--color-accent-100);
     }
 }

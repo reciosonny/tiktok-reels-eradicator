@@ -37,7 +37,7 @@
         {...rest}
     >
         <Switch.Thumb
-            class="bg-background data-[state=unchecked]:shadow-mini dark:border-background/30 dark:bg-foreground dark:shadow-popover pointer-events-none block size-[16px] shrink-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 border-2" style="background: #FFF42B;"
+            class="bg-accent-yellow data-[state=unchecked]:shadow-mini dark:border-background/30 dark:bg-foreground dark:shadow-popover pointer-events-none block size-[16px] shrink-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 border-2"
         />
     </Switch.Root>
     <Label.Root for={id} class={`text-sm font-medium ${disabled ? 'opacity-50' : ''}`}>{@render children?.()}</Label.Root>

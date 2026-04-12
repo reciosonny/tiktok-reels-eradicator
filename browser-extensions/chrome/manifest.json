@@ -14,7 +14,6 @@
         {
             "matches": ["*://www.tiktok.com/*", "*://tiktok.com/*"],
             "js": ["./dist/index.js"],
-            "css": ["./dist/index.css"],
             "run_at": "document_idle"
         }
     ],
@@ -25,5 +24,11 @@
     },
     "options_page": "options.html",
     "permissions": ["storage"],
-    "host_permissions": ["*://www.tiktok.com/*", "*://tiktok.com/*"]
+    "host_permissions": ["*://www.tiktok.com/*", "*://tiktok.com/*"],
+    "web_accessible_resources": [
+        {
+            "resources": ["fonts/*"],
+            "matches": ["*://www.tiktok.com/*", "*://tiktok.com/*"]
+        }
+    ]
 }

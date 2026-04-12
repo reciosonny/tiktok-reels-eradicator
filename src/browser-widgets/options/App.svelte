@@ -108,10 +108,10 @@
 
 <main class="px-[250px] pt-12">
     <section class="flex items-center justify-center">
-        <h1 class="option-header text-center text-[47px] font-heading font-medium px-[30px] py-[15px] bg-black text-white inline relative">Tiktok eradicator</h1>
+        <h1 class="option-header text-center heading-lg px-[30px] py-[15px] bg-black text-white inline relative">Tiktok eradicator</h1>
     </section>
     <section class="mt-20 box-border py-[30px] px-10 bg-primary-100">
-        <h2 class="font-heading text-4xl font-medium text-white">Settings</h2>
+        <h2 class="heading-md text-white">Settings</h2>
         <div class="pt-[50px]">
             <section>
                 <Switch
@@ -120,12 +120,12 @@
                     onCheckedChange={onDisableFor}
                     checked={showDisableFor}
                 >
-                    <span class="text-base font-body font-normal text-white">Disable "For You" blocking</span>
+                    <span class="text-body-lg font-body font-normal text-white">Disable "For You" blocking</span>
                 </Switch>
     
                 {#if showDisableFor}
                     <section class="pt-4">
-                        <h3 class="text-base font-body text-white">Disable for</h3>
+                        <h3 class="text-body-lg font-body text-white">Disable for</h3>
                         <RadioOptions
                             class="pl-3.5 pt-2"
                             value={disableReelOptionsDuration}
@@ -142,7 +142,7 @@
                     disabled={true}
                     onCheckedChange={(event) => (showQuotes = event)}
                 >
-                    <span class="font-body font-normal text-[16px] text-white">Show quotes (soon)</span>
+                    <span class="text-body-lg font-body font-normal text-white">Show quotes (soon)</span>
                 </Switch>
     
                 {#if showQuotes}
@@ -165,7 +165,7 @@
                     </div>
                 {/if}
             </section>
-            <span class="font-body text-[16px] pt-[240px] block text-center text-white">{txtFooter}</span>
+            <span class="text-body-lg font-body pt-[240px] block text-center text-white">{txtFooter}</span>
         </div>
     </section>
 </main>

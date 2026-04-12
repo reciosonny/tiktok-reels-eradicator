@@ -1,15 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-    --font-heading: 'Rubik', sans-serif;
+    --font-heading: "Rubik", sans-serif;
     --font-body: "DM Sans", sans-serif;
     --color-bg: #fff;
     --color-text: #000;
     --color-primary-100: #557480;
     --color-primary-200: #546680;
     --color-primary-300: #545880;
-    --color-accent-100: #FE2B54;
-    --color-accent-200: #20D5EC;
+    --color-accent-100: #fe2b54;
+    --color-accent-200: #20d5ec;
+    --color-accent-yellow: #FFF42B;
+    --color-neutral-50: #f8f9fa;
+    --color-neutral-100: #e9ecef;
+    --color-neutral-200: #dee2e6;
+    --color-neutral-300: #ced4da;
+    --color-neutral-400: #adb5bd;
+    --color-neutral-500: #6c757d;
+    --color-neutral-600: #495057;
+    --color-neutral-700: #343a40;
+    --color-neutral-800: #212529;
+
+    /* Heading font sizes (Rubik) */
+    --text-heading-sm: 27px;
+    --text-heading-md: 36px;
+    --text-heading-lg: 47px;
+    --text-heading-xl: 61px;
+    --text-heading-2xl: 80px;
+
+    /* Body font sizes (DM Sans) */
+    --text-body-sm: 9px;
+    --text-body-md: 12px;
+    --text-body-mid: 14px;
+    --text-body-lg: 16px;
+    --text-body-xl: 21px;
+    --text-body-2xl: 24px;
 }
 
 @layer base {
@@ -19,10 +44,33 @@
     h4,
     h5,
     h6 {
-        /* @apply font-heading; */
+        font-family: var(--font-heading);
+        font-weight: 500;
     }
 
     body {
-        /* @apply font-body; */
+        font-family: var(--font-body);
+        font-weight: 500;
     }
+}
+
+@layer utilities {
+    /* Heading presets: Rubik, medium (500) */
+    .heading-sm   { font-family: var(--font-heading); font-size: var(--text-heading-sm);  font-weight: 500; }
+    .heading-md   { font-family: var(--font-heading); font-size: var(--text-heading-md);  font-weight: 500; }
+    .heading-lg   { font-family: var(--font-heading); font-size: var(--text-heading-lg);  font-weight: 500; }
+    .heading-xl   { font-family: var(--font-heading); font-size: var(--text-heading-xl);  font-weight: 500; }
+    .heading-2xl  { font-family: var(--font-heading); font-size: var(--text-heading-2xl); font-weight: 500; }
+
+    /* Body presets: DM Sans, medium (500) */
+    .body-sm      { font-family: var(--font-body); font-size: var(--text-body-sm);  font-weight: 500; }
+    .body-md      { font-family: var(--font-body); font-size: var(--text-body-md);  font-weight: 500; }
+    .body-mid     { font-family: var(--font-body); font-size: var(--text-body-mid); font-weight: 500; }
+    .body-lg      { font-family: var(--font-body); font-size: var(--text-body-lg);  font-weight: 500; }
+    .body-xl      { font-family: var(--font-body); font-size: var(--text-body-xl);  font-weight: 500; }
+    .body-2xl     { font-family: var(--font-body); font-size: var(--text-body-2xl); font-weight: 500; }
+
+    /* Semibold body variants */
+    .body-lg-semibold { font-family: var(--font-body); font-size: var(--text-body-lg); font-weight: 600; }
+    .body-xl-semibold { font-family: var(--font-body); font-size: var(--text-body-xl); font-weight: 600; }
 }
