@@ -1,0 +1,31 @@
+.tabs-list {
+    display: flex;
+    gap: 16px;
+}
+
+.tabs-tab {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    position: relative;
+    font-family: var(--font-body);
+    font-size: var(--text-body-xl);
+    font-weight: 600;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        width: 34px;
+        height: 5px;
+        background: var(--color-accent-200);
+        transition: transform 0.15s ease;
+    }
+
+    &[data-state="active"]::after {
+        transform: translateX(-50%) scaleX(1);
+    }
+}

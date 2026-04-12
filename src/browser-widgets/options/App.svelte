@@ -3,6 +3,7 @@
     import toast, { Toaster } from 'svelte-french-toast';
     import Switch from "$lib/components/Switch/Switch.svelte";
     import RadioOptions, { type OptionSelection } from "$lib/components/RadioOptions/RadioOptions.svelte";
+    import { Tabs, TabsList, Tab, TabsPanel } from "$lib/components/Tabs";
 
     import "./options.scss";
     import { getChromeStorage, removeChromeStorage, setChromeStorage } from '$lib/chromeStorage';
@@ -112,61 +113,71 @@
     </section>
     <section class="mt-20 box-border py-[30px] px-10 bg-primary-100">
         <h2 class="heading-md text-white">Settings</h2>
-        <div class="pt-[50px]">
-            <section>
-                <Switch
-                    id="thisIsId"
-                    className="mt-4"
-                    onCheckedChange={onDisableFor}
-                    checked={showDisableFor}
-                >
-                    <span class="text-body-lg font-body font-normal text-white">Disable "For You" blocking</span>
-                </Switch>
-    
-                {#if showDisableFor}
-                    <section class="pt-4">
-                        <h3 class="text-body-lg font-body text-white">Disable for</h3>
-                        <RadioOptions
-                            class="pl-3.5 pt-2"
-                            value={disableReelOptionsDuration}
-                            selections={reelOptionSelections}
-                            onValueChanged={onOptionChanged}
-                        />
-                    </section>
-                {/if}
-            </section>
-            <section>
-                <Switch
-                    id="another"
-                    className="mt-4"
-                    disabled={true}
-                    onCheckedChange={(event) => (showQuotes = event)}
-                >
-                    <span class="text-body-lg font-body font-normal text-white">Show quotes (soon)</span>
-                </Switch>
-    
-                {#if showQuotes}
-                    <div class="border-solid border-2 border-black p-4 mt-4">
-                        <h3 class="text-2xl">Quotes here</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quia, adipisci! Nobis soluta repudiandae, distinctio
-                            quam, labore dolorem reprehenderit modi harum error
-                            blanditiis officiis sequi facere iure suscipit mollitia,
-                            dignissimos quisquam?
-                        </p>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quia, adipisci! Nobis soluta repudiandae, distinctio
-                            quam, labore dolorem reprehenderit modi harum error
-                            blanditiis officiis sequi facere iure suscipit mollitia,
-                            dignissimos quisquam?
-                        </p>
-                    </div>
-                {/if}
-            </section>
-            <span class="text-body-lg font-body pt-[240px] block text-center text-white">{txtFooter}</span>
-        </div>
+        <Tabs defaultValue="settings" class="pt-4">
+            <TabsList>
+                <Tab value="settings" class="text-neutral-50">Basic</Tab>
+                <Tab value="quotes" class="text-neutral-50">Quotes</Tab>
+                <Tab value="pomodoro" class="text-neutral-50">Pomodoro</Tab>
+            </TabsList>
+            <TabsPanel value="settings">
+                <section>
+                    <Switch
+                        id="thisIsId"
+                        className="mt-4"
+                        onCheckedChange={onDisableFor}
+                        checked={showDisableFor}
+                    >
+                        <span class="text-body-lg font-body font-normal text-white">Disable "For You" blocking</span>
+                    </Switch>
+
+                    {#if showDisableFor}
+                        <section class="pt-4">
+                            <h3 class="text-body-lg font-body text-white">Disable for</h3>
+                            <RadioOptions
+                                class="pl-3.5 pt-2"
+                                value={disableReelOptionsDuration}
+                                selections={reelOptionSelections}
+                                onValueChanged={onOptionChanged}
+                            />
+                        </section>
+                    {/if}
+                </section>
+                <section>
+                    <Switch
+                        id="another"
+                        className="mt-4"
+                        disabled={true}
+                        onCheckedChange={(event) => (showQuotes = event)}
+                    >
+                        <span class="text-body-lg font-body font-normal text-white">Show quotes (soon)</span>
+                    </Switch>
+
+                    {#if showQuotes}
+                        <div class="border-solid border-2 border-black p-4 mt-4">
+                            <h3 class="text-2xl">Quotes here</h3>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Quia, adipisci! Nobis soluta repudiandae, distinctio
+                                quam, labore dolorem reprehenderit modi harum error
+                                blanditiis officiis sequi facere iure suscipit mollitia,
+                                dignissimos quisquam?
+                            </p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Quia, adipisci! Nobis soluta repudiandae, distinctio
+                                quam, labore dolorem reprehenderit modi harum error
+                                blanditiis officiis sequi facere iure suscipit mollitia,
+                                dignissimos quisquam?
+                            </p>
+                        </div>
+                    {/if}
+                </section>
+                <span class="text-body-lg font-body pt-[240px] block text-center text-white">{txtFooter}</span>
+            </TabsPanel>
+            <TabsPanel value="quotes">
+                <!-- TODO: Add updates -->
+            </TabsPanel>
+        </Tabs>
     </section>
 </main>
 
