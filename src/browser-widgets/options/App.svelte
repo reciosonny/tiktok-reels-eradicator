@@ -4,15 +4,35 @@
     import Switch from "$lib/components/Switch/Switch.svelte";
     import RadioOptions, { type OptionSelection } from "$lib/components/RadioOptions/RadioOptions.svelte";
     import { Tabs, TabsList, Tab, TabsPanel } from "$lib/components/Tabs";
+    import Button from "$lib/components/Button/Button.svelte";
+    import TextInput from "$lib/components/TextInput/TextInput.svelte";
+    import RichTextInput from "$lib/components/RichTextInput/RichTextInput.svelte";
+    import QuoteCard from "$lib/components/QuoteCard/QuoteCard.svelte";
+    import Pagination from "$lib/components/Pagination/Pagination.svelte";
 
     import "./options.scss";
     import { getChromeStorage, removeChromeStorage, setChromeStorage } from '$lib/chromeStorage';
-    import type { DisableReelOptions } from '$lib/types';
+    import type { DisableReelOptions, Quote } from '$lib/types';
 
     let showQuotes = $state(false);
     let showDisableFor = $state(false);
     let disableReelOptions: boolean = $state(false);
     let disableReelOptionsDuration: DisableReelOptions = $state('10 mins.');
+
+    let enableQuotes: boolean = $state(false);
+    let quotes: Quote[] = $state([]);
+    let showAddForm: boolean = $state(false);
+    let editingQuoteId: string | null = $state(null);
+    let formQuote: string = $state('');
+    let formAuthor: string = $state('');
+    let currentPage: number = $state(1);
+
+    const QUOTES_PER_PAGE = 5;
+
+    const totalPages = $derived(Math.max(1, Math.ceil(quotes.length / QUOTES_PER_PAGE)));
+    const paginatedQuotes = $derived(
+        quotes.slice((currentPage - 1) * QUOTES_PER_PAGE, currentPage * QUOTES_PER_PAGE)
+    );
 
     // @ts-ignore
     window.dayjs = dayjs;
@@ -86,8 +106,85 @@
         }
     }
 
+    const initializeQuotesValues = async () => {
+        const storedEnableQuotes = await getChromeStorage('ENABLE_QUOTES');
+        if (storedEnableQuotes !== null && storedEnableQuotes !== undefined) {
+            enableQuotes = storedEnableQuotes;
+        }
+
+        const storedQuotes = await getChromeStorage('CUSTOM_QUOTES');
+        if (storedQuotes) {
+            quotes = storedQuotes;
+        }
+    }
+
+    const persistQuotes = async (updatedQuotes: Quote[]) => {
+        quotes = updatedQuotes;
+        await setChromeStorage('CUSTOM_QUOTES', updatedQuotes);
+    }
+
+    const onEnableQuotesChange = async (val: boolean) => {
+        enableQuotes = val;
+        await setChromeStorage('ENABLE_QUOTES', val);
+        toast.success('Option changed!');
+    }
+
+    const resetForm = () => {
+        formQuote = '';
+        formAuthor = '';
+        showAddForm = false;
+        editingQuoteId = null;
+    }
+
+    const onSaveQuote = async () => {
+        if (!formQuote.trim() || !formAuthor.trim()) {
+            toast.error('Please fill in both fields.');
+            return;
+        }
+
+        if (editingQuoteId) {
+            const updatedQuotes = quotes.map(q =>
+                q.id === editingQuoteId
+                    ? { ...q, quote: formQuote.trim(), author: formAuthor.trim() }
+                    : q
+            );
+            await persistQuotes(updatedQuotes);
+            toast.success('Quote updated!');
+        } else {
+            const newQuote: Quote = {
+                id: crypto.randomUUID(),
+                quote: formQuote.trim(),
+                author: formAuthor.trim(),
+            };
+            await persistQuotes([...quotes, newQuote]);
+            toast.success('Quote added!');
+        }
+
+        resetForm();
+    }
+
+    const onEditQuote = (quote: Quote) => {
+        editingQuoteId = quote.id;
+        formQuote = quote.quote;
+        formAuthor = quote.author;
+        showAddForm = true;
+    }
+
+    const onDeleteQuote = async (id: string) => {
+        const updatedQuotes = quotes.filter(q => q.id !== id);
+        await persistQuotes(updatedQuotes);
+
+        const newTotalPages = Math.max(1, Math.ceil(updatedQuotes.length / QUOTES_PER_PAGE));
+        if (currentPage > newTotalPages) {
+            currentPage = newTotalPages;
+        }
+
+        toast.success('Quote deleted!');
+    }
+
     $effect(() => {
         initializeLocalStoreValues();
+        initializeQuotesValues();
     });
     
     const onDisableFor = async (val: boolean) => {
@@ -175,6 +272,66 @@
                 <span class="text-body-lg font-body pt-[240px] block text-center text-white">{txtFooter}</span>
             </TabsPanel>
             <TabsPanel value="quotes">
+                <section>
+                    <Switch
+                        id="enableQuotes"
+                        className="mt-4"
+                        onCheckedChange={onEnableQuotesChange}
+                        checked={enableQuotes}
+                    >
+                        <span class="text-body-lg font-body font-normal text-white">Enable quotes</span>
+                    </Switch>
+
+                    {#if enableQuotes}
+                        <section class="mt-6">
+                            <h3 class="heading-md text-white">Your custom quotes</h3>
+
+                            {#if !showAddForm}
+                                <Button variant="default" class="mt-4" onclick={() => (showAddForm = true)}>
+                                    + Add quote
+                                </Button>
+                            {:else}
+                                <div class="mt-4">
+                                    <label for="authorQuote" class="text-body-lg font-body font-normal text-white block mb-2">Author quote</label>
+                                    <RichTextInput id="authorQuote" bind:value={formQuote} placeholder="Type your quote..." rows={4} />
+
+                                    <label for="authorName" class="text-body-lg font-body font-normal text-white block mb-2 mt-4">Author name</label>
+                                    <TextInput id="authorName" bind:value={formAuthor} placeholder="Type something..." />
+
+                                    <div class="flex gap-3 mt-4 justify-center">
+                                        <Button variant="edit" onclick={onSaveQuote}>
+                                            Save changes
+                                        </Button>
+                                        <Button variant="delete" onclick={resetForm}>
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                </div>
+                            {/if}
+
+                            {#if quotes.length > 0}
+                                <div class="mt-6 flex flex-col gap-2">
+                                    {#each paginatedQuotes as q (q.id)}
+                                        <QuoteCard
+                                            quote={q.quote}
+                                            author={q.author}
+                                            onEdit={() => onEditQuote(q)}
+                                            onDelete={() => onDeleteQuote(q.id)}
+                                        />
+                                    {/each}
+                                </div>
+
+                                <Pagination
+                                    {currentPage}
+                                    {totalPages}
+                                    onPageChange={(page) => (currentPage = page)}
+                                />
+                            {/if}
+                        </section>
+                    {/if}
+                </section>
+            </TabsPanel>
+            <TabsPanel value="pomodoro">
                 <!-- TODO: Add updates -->
             </TabsPanel>
         </Tabs>
