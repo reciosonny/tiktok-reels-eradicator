@@ -1,6 +1,6 @@
 {
-    "name": "Tiktok eradicator",
-    "description": "TikTok Eradicator helps you take back control of your time by removing TikTok's addictive feed.",
+    "name": "Feed breaker",
+    "description": "Feed breaker helps you take back control of your time by removing social media's addictive feed and short-form contents.",
     "version": "1.0.5",
     "manifest_version": 3,
     "icons": {

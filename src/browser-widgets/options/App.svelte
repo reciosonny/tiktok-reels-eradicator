@@ -206,7 +206,7 @@
 
 <main class="px-[250px] pt-12">
     <section class="flex items-center justify-center">
-        <h1 class="option-header text-center heading-lg px-[30px] py-[15px] bg-black text-white inline relative">Tiktok eradicator</h1>
+        <h1 class="option-header text-center heading-lg px-[30px] py-[15px] bg-black text-white inline relative">Feed breaker</h1>
     </section>
     <section class="mt-20 box-border py-[30px] px-10 bg-primary-100">
         <h2 class="heading-md text-white">Settings</h2>

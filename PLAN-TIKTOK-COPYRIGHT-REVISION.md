@@ -2,7 +2,7 @@
 
 ## Context
 
-"Tiktok eradicator" was removed from the Chrome Web Store on April 21, 2026 following a trademark complaint filed by Corporation Service Company (CSC) on behalf of TikTok (Case 53-1797492). Google confirmed the only realistic path to reinstatement is **submitting a brand-new extension under a new package name** — updating or appealing the removed listing is not an option. The complaint explicitly flagged "Tik" and "Tok" as infringing substrings, not just the full "TikTok" trademark.
+"Tiktok Eradicator" was removed from the Chrome Web Store on April 21, 2026 following a trademark complaint filed by Corporation Service Company (CSC) on behalf of TikTok (Case 53-1797492). Google confirmed the only realistic path to reinstatement is **submitting a brand-new extension under a new package name** — updating or appealing the removed listing is not an option. The complaint explicitly flagged "Tik" and "Tok" as infringing substrings, not just the full "TikTok" trademark.
 
 ---
 
@@ -15,36 +15,19 @@
 ---
 
 ## Fix 1: Rename the Extension
+> Note by Sonny: "feed breaker" is the new extension name
 
-**Recommended new name:** `Feed Eradicator`
+**Recommended new name:** `Feed Breaker`
 - No TikTok trademark or substrings ("Tik", "Tok")
-- Preserves the "eradicator" personality
 - Descriptive: makes clear it blocks feeds
 
 **New description (draft):**
-> "Take back control of your time by blocking addictive short-video feeds. Feed Eradicator hides the For You and Following feeds so you can use the platform intentionally."
+> "Take back control of your time by blocking addictive feed and short-form contents."
 
-Note: If "TikTok" must be referenced (e.g., in store keywords/tags), use only `TikTok™` in secondary text — never in the extension name or subtitle.
-
-**Files to update:**
-- `browser-extensions/chrome/manifest.json` — `"name"` → `"Feed Eradicator"`, `"description"` → new copy, `"version"` → `"1.1.0"` (bump to mark compliance update)
-- `package.json` — `"name"` → `"feed-eradicator"`, `"version"` → `"1.1.0"`
 
 ---
 
-## Fix 2: Replace the Icon
-
-`browser-extensions/chrome/images/default.png` uses TikTok's logo (the cyan/pink music note "d") with a red prohibition slash — must be replaced entirely. No part of TikTok's visual identity can appear.
-
-**New icon concept:** An original design — e.g., a generic phone/screen with a feed silhouette and a block/shield symbol. No music notes, no TikTok brand colors.
-
-**Deliverable needed:** A new `default.png` at 128×128px (the manifest uses this file for both 128 and 19 sizes).
-
-If you can provide an SVG or PNG source, I'll handle resizing and manifest wiring. Alternatively, I can generate a minimal programmatic icon.
-
----
-
-## Fix 3: Write and Host a Privacy Policy
+## Fix 2: Write and Host a Privacy Policy
 
 **Required because:** The extension stores data via `chrome.storage.local` (`TIMESPENT_STORE`, `DISABLE_DURATION`, `DISABLE_REEL_OPTIONS`, `DISABLE_DURATION_SELECTION`, custom quotes). Chrome Web Store requires a privacy policy for any data-storing extension.
 
@@ -61,7 +44,7 @@ If you can provide an SVG or PNG source, I'll handle resizing and manifest wirin
 
 ---
 
-## Fix 4: New Chrome Web Store Submission
+## Fix 3: New Chrome Web Store Submission
 
 Because the old listing is permanently removed, this must be submitted as an entirely new extension:
 
@@ -77,14 +60,13 @@ Because the old listing is permanently removed, this must be submitted as an ent
 ## Execution Order
 
 1. **Decide/confirm the new name** — "Feed Eradicator" or an alternative (must avoid "Tik"/"Tok")
-2. **Create a new icon** — replace `browser-extensions/chrome/images/default.png`
-3. **Update `manifest.json`** — name, description, version bump
-4. **Update `package.json`** — name, version sync
-5. **Create `docs/privacy-policy.html`** — accurate local-storage-only policy text
-6. **Enable GitHub Pages** on the repo and verify the policy URL is publicly accessible
-7. **Run `pnpm build`** and verify build output is clean
-8. **Reload the unpacked extension** in `chrome://extensions` and smoke-test
-9. **Submit as a new item** in Chrome Web Store Developer Dashboard
+2. **Update `manifest.json`** — name, description, version bump
+3. **Update `package.json`** — name, version sync
+4. **Create `docs/privacy-policy.html`** — accurate local-storage-only policy text
+5. **Enable GitHub Pages** on the repo and verify the policy URL is publicly accessible
+6. **Run `pnpm build`** and verify build output is clean
+7. **Reload the unpacked extension** in `chrome://extensions` and smoke-test
+8. **Submit as a new item** in Chrome Web Store Developer Dashboard
 
 ---
 
