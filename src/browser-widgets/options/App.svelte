@@ -239,36 +239,6 @@
                         </section>
                     {/if}
                 </section>
-                <section>
-                    <Switch
-                        id="another"
-                        className="mt-4"
-                        disabled={true}
-                        onCheckedChange={(event) => (showQuotes = event)}
-                    >
-                        <span class="text-body-lg font-body font-normal text-white">Show quotes (soon)</span>
-                    </Switch>
-
-                    {#if showQuotes}
-                        <div class="border-solid border-2 border-black p-4 mt-4">
-                            <h3 class="text-2xl">Quotes here</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quia, adipisci! Nobis soluta repudiandae, distinctio
-                                quam, labore dolorem reprehenderit modi harum error
-                                blanditiis officiis sequi facere iure suscipit mollitia,
-                                dignissimos quisquam?
-                            </p>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quia, adipisci! Nobis soluta repudiandae, distinctio
-                                quam, labore dolorem reprehenderit modi harum error
-                                blanditiis officiis sequi facere iure suscipit mollitia,
-                                dignissimos quisquam?
-                            </p>
-                        </div>
-                    {/if}
-                </section>
                 <span class="text-body-lg font-body pt-[240px] block text-center text-white">{txtFooter}</span>
             </TabsPanel>
             <TabsPanel value="quotes">
@@ -284,21 +254,21 @@
 
                     {#if enableQuotes}
                         <section class="mt-6">
-                            <h3 class="heading-md text-white">Your custom quotes</h3>
+                            <h3 class="text-body-xl text-white">Your custom quotes</h3>
 
                             {#if !showAddForm}
                                 <Button variant="default" class="mt-4" onclick={() => (showAddForm = true)}>
                                     + Add quote
                                 </Button>
                             {:else}
-                                <div class="mt-4">
+                                <div class="mt-4 w-96">
                                     <label for="authorQuote" class="text-body-lg font-body font-normal text-white block mb-2">Author quote</label>
                                     <RichTextInput id="authorQuote" bind:value={formQuote} placeholder="Type your quote..." rows={4} />
 
                                     <label for="authorName" class="text-body-lg font-body font-normal text-white block mb-2 mt-4">Author name</label>
                                     <TextInput id="authorName" bind:value={formAuthor} placeholder="Type something..." />
 
-                                    <div class="flex gap-3 mt-4 justify-center">
+                                    <div class="flex gap-3 mt-4 justify-end">
                                         <Button variant="edit" onclick={onSaveQuote}>
                                             Save changes
                                         </Button>
