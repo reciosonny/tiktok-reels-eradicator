@@ -83,12 +83,12 @@
 </script>
 
 {#if mainDisplayStore.store.isVisible}
-    <main class="tiktok-reels-eradicator-main">
+    <main class="feed-breaker-main">
         <div class="flex flex-col gap-2.5">
             <h1 class="heading-sm leading-none">This page is blocked</h1>
             <p class="body-lg leading-none">
                 You saved: <strong>{formattedTime}</strong> worth of distraction from
-                scrolling tiktok
+                scrolling through feeds
             </p>
         </div>
 

@@ -93,7 +93,7 @@ export const injectReelsEradicator = async () => {
     observer.observe(document.body, config);
 
     // Initial scan: handle elements already in the DOM before the observer started
-    // This is critical for cold loads where document_idle fires after TikTok has already rendered
+    // This is critical for cold loads where document_idle fires after the site has already rendered
     if (isUrlValid()) {
         disablePageElement();
         interceptAndPauseVideos();

@@ -66,13 +66,13 @@ const injectReelsEraticatorFn = async () => {
     }
 }
 
-// TODO: Add UI for localhost dev as well that points to tiktok for testing
+// TODO: Add UI for localhost dev as well that points to the site for testing
 if (window.location.protocol !== "chrome-extension:") {
     injectReelsEraticatorFn();
 
-    // Create Shadow DOM host for CSS isolation from TikTok's styles
+    // Create Shadow DOM host for CSS isolation from the site's styles
     const host = document.createElement('div');
-    host.id = 'tiktok-reels-eradicator-host';
+    host.id = 'feed-breaker-host';
     host.style.cssText = 'position: fixed; z-index: 99999; top: 0; left: 0; width: 0; height: 0; overflow: visible; pointer-events: none;';
     document.body.appendChild(host);
 
@@ -87,7 +87,7 @@ if (window.location.protocol !== "chrome-extension:") {
 
     const app = mount(App, { target: container });
 } else { //mount the options page here...
-    // Inject CSS globally for the options page (no TikTok styles to conflict with)
+    // Inject CSS globally for the options page (no site styles to conflict with)
     const style = document.createElement('style');
     style.textContent = appCss + styleCss;
     document.head.appendChild(style);
