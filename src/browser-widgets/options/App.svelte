@@ -253,7 +253,7 @@
                     </Switch>
 
                     {#if enableQuotes}
-                        <section class="mt-6">
+                        <section class="mt-6 w-[592px]">
                             <h3 class="text-body-xl text-white">Your custom quotes</h3>
 
                             {#if !showAddForm}
